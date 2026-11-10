@@ -25,6 +25,7 @@ window.MathJax = {
   --border:#dbe2f0; --grid:#e6ebf6; --axis:#9aa8c0;
   --accent:#2f6df6; --accent2:#e0533d; --accent3:#12a06f; --accent4:#a855f7;
   --shadow:0 2px 10px rgba(30,50,90,.07);
+  --sidebar-w:260px;
 }
 [data-theme="dark"]{
   --bg:#0d131f; --panel:#151d2c; --panel2:#1b2436; --text:#e6ecf8; --muted:#93a3bd;
@@ -39,20 +40,117 @@ body{
   font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
   transition:background .25s,color .25s;
 }
+body.no-scroll{overflow:hidden}
 mjx-container{color:inherit}
-/* ---------- header ---------- */
-.topbar{position:sticky;top:0;z-index:50;background:var(--panel);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
-.topbar-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:9px 18px;flex-wrap:wrap}
-.brand{font-weight:800;font-size:15px;white-space:nowrap}
+
+/* ================= мобильная шапка (видна только на телефоне) ================= */
+.topbar{
+  display:none;
+  position:fixed;top:0;left:0;right:0;z-index:55;
+  height:56px;
+  background:var(--panel);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow);
+  align-items:center;gap:10px;padding:0 12px;
+}
+.topbar .brand{
+  flex:1;min-width:0;
+  font-size:14.5px;font-weight:800;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
 .brand b{color:var(--accent)}
-.nav{display:flex;gap:3px;overflow-x:auto;flex:1;padding-bottom:2px}
-.nav a{white-space:nowrap;padding:6px 10px;border-radius:8px;text-decoration:none;color:var(--muted);font-size:13.5px;font-weight:600;transition:.15s}
+.icon-btn{
+  flex:0 0 auto;
+  width:38px;height:38px;
+  display:grid;place-items:center;
+  border:1px solid var(--border);
+  background:var(--panel2);
+  color:var(--text);
+  border-radius:10px;
+  font-size:16px;line-height:1;
+  cursor:pointer;transition:.15s;
+}
+.icon-btn:hover{filter:brightness(.95)}
+.icon-btn:active{transform:scale(.96)}
+
+/* ================= сайдбар ================= */
+.sidebar{
+  position:fixed;left:0;top:0;bottom:0;
+  width:var(--sidebar-w);
+  background:var(--panel);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  z-index:60;
+  overflow-y:auto;
+  transform:translateX(0);
+  transition:transform .26s ease;
+}
+.sidebar-head{
+  display:flex;align-items:center;gap:10px;
+  padding:16px 14px 12px 16px;
+  border-bottom:1px solid var(--border);
+}
+.sidebar-head .brand{
+  flex:1;min-width:0;
+  font-size:14.5px;font-weight:800;line-height:1.25;
+}
+.sidebar-head .brand small{
+  display:block;
+  font-size:11px;font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;
+  color:var(--muted);margin-top:3px;
+}
+#menuClose{display:none}
+
+.nav{
+  display:flex;flex-direction:column;gap:2px;
+  padding:10px;flex:1;
+}
+.nav a{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 12px;border-radius:9px;
+  text-decoration:none;
+  color:var(--muted);
+  font-size:14px;font-weight:600;
+  transition:.15s;
+  white-space:nowrap;overflow:hidden;
+}
 .nav a:hover{background:var(--panel2);color:var(--text)}
 .nav a.active{background:var(--accent);color:#fff}
-#themeToggle{border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:10px;padding:6px 11px;cursor:pointer;font-size:15px;line-height:1}
-#themeToggle:hover{filter:brightness(.95)}
-/* ---------- layout ---------- */
-main{max-width:1180px;margin:0 auto;padding:22px 18px 90px}
+.nav a .n{
+  flex:0 0 auto;
+  width:20px;height:20px;border-radius:6px;
+  background:rgba(0,0,0,.06);
+  display:grid;place-items:center;
+  font-size:11px;font-weight:800;
+}
+[data-theme="dark"] .nav a .n{background:rgba(255,255,255,.08)}
+.nav a.active .n{background:rgba(255,255,255,.22)}
+.sidebar-foot{
+  padding:12px 16px 16px;
+  border-top:1px solid var(--border);
+  font-size:12px;line-height:1.5;color:var(--muted);
+}
+
+/* ================= оверлей (мобильный) ================= */
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.5);
+  z-index:58;
+  opacity:0;pointer-events:none;
+  transition:opacity .2s;
+}
+.overlay.show{opacity:1;pointer-events:auto}
+
+/* ================= контент ================= */
+.content{
+  margin-left:var(--sidebar-w);
+  padding:26px 26px 90px;
+  transition:margin-left .26s;
+}
+.content-inner{max-width:1000px;margin:0 auto}
+
+/* ---------- страницы ---------- */
 .page{display:none;animation:fade .25s ease}
 .page.active{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -60,12 +158,13 @@ h1{font-size:26px;margin:4px 0 6px;letter-spacing:-.3px}
 h2{font-size:19px;margin:26px 0 10px}
 h3{font-size:16px;margin:18px 0 8px}
 .lead{color:var(--muted);margin:0 0 20px;max-width:760px}
-/* ---------- cards ---------- */
+
+/* ---------- карточки ---------- */
 .q{background:var(--panel);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
 .q-head{display:flex;gap:10px;align-items:center;padding:12px 15px;cursor:pointer;user-select:none;transition:background .15s}
 .q-head:hover{background:var(--panel2)}
 .q-num{flex:0 0 auto;min-width:28px;height:28px;padding:0 6px;border-radius:8px;background:var(--panel2);color:var(--muted);display:grid;place-items:center;font-size:13px;font-weight:800}
-.q-title{flex:1;font-weight:650}
+.q-title{flex:1;font-weight:650;min-width:0}
 .chev{color:var(--muted);transition:transform .2s;font-size:12px}
 .q.open .chev{transform:rotate(90deg)}
 .q-body{display:none;padding:4px 16px 16px;border-top:1px solid var(--border)}
@@ -73,7 +172,8 @@ h3{font-size:16px;margin:18px 0 8px}
 .q-check:hover{border-color:var(--accent3)}
 .q.learned .q-check{background:var(--accent3);border-color:var(--accent3);color:#fff}
 .q.learned .q-title{opacity:.75}
-/* ---------- content bits ---------- */
+
+/* ---------- контентные блоки ---------- */
 .fml{font-family:'Cambria Math',Georgia,'Times New Roman',serif;font-size:16.5px;line-height:2;background:var(--panel2);border-radius:10px;padding:8px 14px;margin:10px 0;overflow-x:auto}
 .mat{display:inline-grid;gap:2px 12px;padding:3px 9px;border-left:2px solid currentColor;border-right:2px solid currentColor;border-radius:3px;vertical-align:middle;font-style:normal;line-height:1.35}
 .mat>span{text-align:center}
@@ -86,7 +186,8 @@ ul.tight li{margin:4px 0}
 .intuition b{color:var(--accent3)}
 .proof b{color:var(--accent)}
 .qed{float:right;color:var(--muted);font-weight:700}
-/* ---------- viz ---------- */
+
+/* ---------- визуализации ---------- */
 .viz{background:var(--panel2);border-radius:14px;padding:14px;margin:12px 0}
 .viz canvas{width:100%;height:330px;display:block;border-radius:10px;background:var(--panel);touch-action:none}
 .viz .hint{color:var(--muted);font-size:13.5px;margin:8px 0 0}
@@ -106,7 +207,8 @@ span.cval{display:grid;place-items:center;width:54px;height:34px;border-radius:7
 span.cval.hl{background:var(--accent);color:#fff}
 .mformula{margin-top:12px;text-align:center;font-size:15px;min-height:24px;color:var(--muted)}
 .mformula b{color:var(--text)}
-/* sarrus */
+
+/* ---------- Саррюс ---------- */
 .sarrus{display:flex;justify-content:center;margin-bottom:12px}
 .sgrid{display:grid;grid-template-columns:repeat(3,auto);gap:6px 16px;padding:8px 14px;border-left:2px solid var(--text);border-right:2px solid var(--text);width:max-content;border-radius:3px}
 .sgrid span{padding:4px 6px;border-radius:6px;transition:.12s;min-width:44px;text-align:center}
@@ -115,14 +217,16 @@ span.cval.hl{background:var(--accent);color:#fff}
 .term{cursor:pointer;border-radius:8px;padding:6px 11px;border:1px solid var(--border);background:var(--panel);color:var(--text);font-size:13.5px;font-family:'Cambria Math',Georgia,serif;transition:.12s}
 .term.plus:hover{background:var(--accent3);border-color:var(--accent3);color:#fff}
 .term.minus:hover{background:var(--accent2);border-color:var(--accent2);color:#fff}
-/* progress */
+
+/* ---------- прогресс ---------- */
 .prog-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 15px;margin-bottom:9px;box-shadow:var(--shadow)}
 .prog-title{font-weight:650;font-size:14.5px;margin-bottom:7px}
 .prog{display:flex;align-items:center;gap:10px}
 .bar{height:8px;background:var(--panel2);border-radius:99px;overflow:hidden;flex:1}
 .bar-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent4));transition:width .35s}
 .prog-label{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;flex:0 0 auto}
-/* buttons / misc */
+
+/* ---------- кнопки / мелочи ---------- */
 .btn{border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:10px;padding:8px 14px;cursor:pointer;font:inherit;font-size:14px;font-weight:600;transition:.15s}
 .btn:hover{background:var(--panel2)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -135,35 +239,88 @@ span.cval.hl{background:var(--accent);color:#fff}
 .rule{display:flex;gap:12px;padding:9px 0;border-bottom:1px dashed var(--border)}
 .rule:last-child{border-bottom:0}
 .rule-n{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel2);color:var(--muted);display:grid;place-items:center;font-size:12.5px;font-weight:800}
-.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;background:var(--panel2);padding:1px 6px;border-radius:5px;border:1px solid var(--border)}
-@media(max-width:640px){
-  .viz canvas{height:260px}
-  h1{font-size:22px}
-  .srow label{flex:0 0 70px;font-size:13px}
-  .mcell,span.cval{width:44px;height:30px;font-size:13px}
+
+/* ================= адаптивность ================= */
+@media (max-width: 900px){
+  .topbar{display:flex}
+  .sidebar{
+    width:288px;
+    max-width:86vw;
+    transform:translateX(-100%);
+  }
+  .sidebar.open{
+    transform:translateX(0);
+    box-shadow:0 0 40px rgba(0,0,0,.35);
+  }
+  #menuClose{display:grid}
+  .content{
+    margin-left:0;
+    padding:76px 16px 90px;
+  }
+  .sidebar-head{padding-top:18px}
+}
+@media (min-width: 901px){
+  .topbar{display:none}
+  .overlay{display:none}
+}
+@media (max-width: 640px){
+  .content{padding:72px 12px 80px}
+  h1{font-size:21px}
+  h2{font-size:17px}
+  .viz canvas{height:240px}
+  .q-head{padding:11px 12px;gap:8px}
+  .q-title{font-size:14.5px}
+  .q-body{padding:2px 12px 14px}
+  .mmul-wrap{gap:6px}
+  .mgrid{padding:5px 7px;gap:3px}
+  .mcell,span.cval{width:42px;height:30px;font-size:12.5px}
+  .srow label{flex:0 0 64px;font-size:12.5px}
+  .srow .sval{flex:0 0 40px;font-size:12.5px}
+  .btn{padding:7px 11px;font-size:13px}
+  .ticket{padding:12px 12px}
+  .prog-card{padding:10px 12px}
+  .fml{font-size:15px;padding:6px 10px}
 }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <div class="brand">ЛА&nbsp;и&nbsp;АГ · <b>коллоквиум 2026</b></div>
-    <nav class="nav">
-      <a href="#home" data-page="home">О коллоквиуме</a>
-      <a href="#b1" data-page="b1">1 · Матрицы</a>
-      <a href="#b2" data-page="b2">2 · Определители</a>
-      <a href="#b3" data-page="b3">3 · Обратная · СЛАУ</a>
-      <a href="#b4" data-page="b4">4 · Векторы</a>
-      <a href="#b5" data-page="b5">5 · Произведения</a>
-      <a href="#b6" data-page="b6">6 · Доказательства</a>
-      <a href="#ticket" data-page="ticket">Билет / тренажёр</a>
-    </nav>
-    <button id="themeToggle" title="Сменить тему">🌙</button>
-  </div>
+<!-- ================= мобильная шапка ================= -->
+<header class="topbar" id="topbar">
+  <button class="icon-btn" id="menuToggle" aria-label="Открыть меню">☰</button>
+  <div class="brand">ЛА&nbsp;и&nbsp;АГ · <b>коллоквиум</b></div>
+  <button class="icon-btn theme-toggle" title="Сменить тему">🌙</button>
 </header>
 
-<main>
+<!-- затемнение под выдвижным меню -->
+<div class="overlay" id="overlay"></div>
+
+<!-- ================= сайдбар ================= -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-head">
+    <div class="brand">ЛА&nbsp;и&nbsp;АГ<small>коллоквиум 2026</small></div>
+    <button class="icon-btn theme-toggle" title="Сменить тему">🌙</button>
+    <button class="icon-btn" id="menuClose" aria-label="Закрыть меню">✕</button>
+  </div>
+  <nav class="nav">
+    <a href="#home" data-page="home"><span class="n">•</span>О коллоквиуме</a>
+    <a href="#b1" data-page="b1"><span class="n">1</span>Матрицы</a>
+    <a href="#b2" data-page="b2"><span class="n">2</span>Определители</a>
+    <a href="#b3" data-page="b3"><span class="n">3</span>Обратная · СЛАУ</a>
+    <a href="#b4" data-page="b4"><span class="n">4</span>Векторы</a>
+    <a href="#b5" data-page="b5"><span class="n">5</span>Произведения</a>
+    <a href="#b6" data-page="b6"><span class="n">6</span>Доказательства</a>
+    <a href="#ticket" data-page="ticket"><span class="n">🎲</span>Билет / тренажёр</a>
+  </nav>
+  <div class="sidebar-foot">
+    Лектор потока: Тарасенко А. А.<br>
+    Максимум за коллоквиум — 14 баллов.
+  </div>
+</aside>
+
+<!-- ================= контент ================= -->
+<main class="content">
+<div class="content-inner">
 
 <!-- ==================== HOME ==================== -->
 <section class="page" id="home">
@@ -1006,6 +1163,7 @@ span.cval.hl{background:var(--accent);color:#fff}
   </div>
 </section>
 
+</div><!-- /content-inner -->
 </main>
 
 <script>
@@ -1027,7 +1185,6 @@ function hexA(hex, a){
   var n = parseInt(hex,16);
   return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
 }
-/* подготовка canvas: возвращает {ctx,w,h} или null, если он скрыт */
 function ctxOf(cv){
   if(!cv) return null;
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -1087,7 +1244,6 @@ function fmt(x){
   var r = Math.round(x*1000)/1000;
   return (Object.is(r,-0) ? 0 : r).toString();
 }
-/* реестр всех отрисовок */
 var Viz = {
   fns: [],
   add: function(fn){ this.fns.push(fn); },
@@ -1097,8 +1253,6 @@ var Viz = {
     }
   }
 };
-
-/* MathJax: пере-типографировать динамический контент (тренажёр) */
 function typeset(el){
   if(window.MathJax && MathJax.typesetPromise){
     MathJax.typesetPromise(el ? [el] : undefined).catch(function(){});
@@ -1110,19 +1264,40 @@ function typeset(el){
    ===================================================================== */
 $(function(){
 
-  /* ---------- тема ---------- */
+  /* ---------- тема (кнопок может быть несколько) ---------- */
   var THEME_KEY = 'la-theme';
   function applyTheme(t){
     document.documentElement.setAttribute('data-theme', t);
-    $('#themeToggle').text(t === 'dark' ? '☀️' : '🌙');
+    $('.theme-toggle').text(t === 'dark' ? '☀️' : '🌙');
     try{ localStorage.setItem(THEME_KEY, t); }catch(e){}
     setTimeout(Viz.redraw, 30);
   }
   var savedTheme = 'light';
   try{ savedTheme = localStorage.getItem(THEME_KEY) || 'light'; }catch(e){}
   applyTheme(savedTheme);
-  $('#themeToggle').on('click', function(){
+  $(document).on('click', '.theme-toggle', function(){
     applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ---------- мобильное меню ---------- */
+  var $sidebar = $('#sidebar'), $overlay = $('#overlay'), $body = $('body');
+  function openSidebar(){
+    $sidebar.addClass('open');
+    $overlay.addClass('show');
+    $body.addClass('no-scroll');
+  }
+  function closeSidebar(){
+    $sidebar.removeClass('open');
+    $overlay.removeClass('show');
+    $body.removeClass('no-scroll');
+  }
+  $('#menuToggle').on('click', function(){
+    if($sidebar.hasClass('open')) closeSidebar(); else openSidebar();
+  });
+  $('#menuClose').on('click', closeSidebar);
+  $overlay.on('click', closeSidebar);
+  $(document).on('keydown', function(e){
+    if(e.key === 'Escape') closeSidebar();
   });
 
   /* ---------- навигация ---------- */
@@ -1142,6 +1317,7 @@ $(function(){
       try{ history.replaceState(null,'','#'+id); }catch(err){ location.hash = id; }
     }
     showPage(id);
+    closeSidebar();
   });
   $(window).on('hashchange', function(){ showPage(location.hash.slice(1) || 'home'); });
 
@@ -1158,7 +1334,7 @@ $(function(){
     $(this).closest('.page').find('.q').toggleClass('open', open);
   });
 
-  /* ---------- прогресс / «изучено» ---------- */
+  /* ---------- прогресс ---------- */
   var LEARN_KEY = 'la-learned';
   function getLearned(){
     try{ return JSON.parse(localStorage.getItem(LEARN_KEY)) || {}; }catch(e){ return {}; }
@@ -1203,11 +1379,12 @@ $(function(){
     updateProgress();
   });
 
-  /* ---------- перерисовка по ресайзу ---------- */
+  /* ---------- перерисовка / закрытие меню при ресайзе ---------- */
   var rt;
   $(window).on('resize', function(){
     clearTimeout(rt);
     rt = setTimeout(Viz.redraw, 140);
+    if(window.innerWidth > 900) closeSidebar();
   });
 
   /* =====================================================================
@@ -1399,7 +1576,7 @@ $(function(){
   })();
 
   /* =====================================================================
-     ВИЗУАЛИЗАЦИЯ 5 · сложение векторов (параллелограмм)
+     ВИЗУАЛИЗАЦИЯ 5 · сложение векторов
      ===================================================================== */
   (function(){
     var cv = document.getElementById('cvSum');
@@ -1414,13 +1591,11 @@ $(function(){
 
       var O = cam.pt(0,0), A = cam.pt(ax,ay), B = cam.pt(bx,by), S = cam.pt(ax+bx, ay+by);
 
-      /* параллелограмм */
       ctx.setLineDash([5,5]); ctx.strokeStyle = T.muted; ctx.lineWidth = 1.4;
       ctx.beginPath(); ctx.moveTo(A[0],A[1]); ctx.lineTo(S[0],S[1]);
       ctx.lineTo(B[0],B[1]); ctx.stroke();
       ctx.setLineDash([]);
 
-      /* заливка */
       ctx.beginPath();
       ctx.moveTo(O[0],O[1]); ctx.lineTo(A[0],A[1]);
       ctx.lineTo(S[0],S[1]); ctx.lineTo(B[0],B[1]);
@@ -1462,24 +1637,20 @@ $(function(){
 
       var ex = Math.cos(ang), ey = Math.sin(ang);
 
-      /* ось */
       var L = 4.5;
       var a1 = cam.pt(-L*ex,-L*ey), a2 = cam.pt(L*ex,L*ey);
       ctx.strokeStyle = T.axis; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(a1[0],a1[1]); ctx.lineTo(a2[0],a2[1]); ctx.stroke();
 
-      /* вектор e */
       var E = cam.pt(ex,ey);
       var O = cam.pt(0,0);
       arrow(ctx,O[0],O[1],E[0],E[1],T.muted,1.6);
       label(ctx,E[0]+7,E[1]-7,'e',T.muted);
 
-      /* вектор b */
       var B = cam.pt(bx,by);
       arrow(ctx,O[0],O[1],B[0],B[1],T.accent,2.6);
       label(ctx,B[0]+8,B[1]-6,'b',T.accent);
 
-      /* проекция */
       var pr = bx*ex + by*ey;
       var P = cam.pt(pr*ex, pr*ey);
 
@@ -1522,7 +1693,6 @@ $(function(){
       var A = cam.pt(la,0);
       var B = cam.pt(lb*Math.cos(phi), lb*Math.sin(phi));
 
-      /* дуга угла */
       ctx.strokeStyle = T.accent4; ctx.lineWidth = 1.6;
       ctx.beginPath();
       ctx.arc(O[0],O[1], Math.min(56, cam.s*1.4), 0, -phi, true);
@@ -1530,7 +1700,6 @@ $(function(){
       var mid = -phi/2;
       label(ctx, O[0] + Math.cos(mid)*72, O[1] + Math.sin(mid)*72 - 4, 'φ', T.accent4);
 
-      /* проекция b на a */
       var proj = lb*Math.cos(phi);
       var P = cam.pt(proj, 0);
       ctx.setLineDash([5,5]); ctx.strokeStyle = T.muted; ctx.lineWidth = 1.4;
@@ -1562,7 +1731,7 @@ $(function(){
   })();
 
   /* =====================================================================
-     ВИЗУАЛИЗАЦИЯ 8–9 · изометрия для векторного и смешанного
+     ВИЗУАЛИЗАЦИЯ 8–9 · изометрия
      ===================================================================== */
   function isoProject(w,h,scale,cx,cy){
     var c30 = Math.cos(Math.PI/6), s30 = Math.sin(Math.PI/6);
@@ -1585,7 +1754,6 @@ $(function(){
       var scale = Math.min(w,h)/10;
       var P = isoProject(w,h,scale,w/2,h*0.66);
 
-      /* плоскость z = 0 */
       ctx.strokeStyle = T.grid; ctx.lineWidth = 1;
       for(var i=-3;i<=3;i++){
         var p1 = P([i,-3,0]), p2 = P([i,3,0]);
@@ -1600,7 +1768,6 @@ $(function(){
 
       var O = P([0,0,0]), pA = P(A), pB = P(B), pS = P(S);
 
-      /* параллелограмм */
       ctx.beginPath();
       ctx.moveTo(O[0],O[1]); ctx.lineTo(pA[0],pA[1]);
       ctx.lineTo(pS[0],pS[1]); ctx.lineTo(pB[0],pB[1]);
@@ -1611,7 +1778,6 @@ $(function(){
       arrow(ctx,O[0],O[1],pA[0],pA[1],T.accent,2.6);
       arrow(ctx,O[0],O[1],pB[0],pB[1],T.accent4,2.6);
 
-      /* векторное произведение — вертикально */
       var crossLen = la*lb*Math.sin(th);
       var N = P([0,0,crossLen*0.75]);
       ctx.setLineDash([4,4]); ctx.strokeStyle = T.muted; ctx.lineWidth = 1.2;
@@ -1671,20 +1837,17 @@ $(function(){
         ctx.setLineDash([]);
       }
 
-      /* верхняя грань */
       ctx.beginPath();
       ctx.moveTo(c001[0],c001[1]); ctx.lineTo(c101[0],c101[1]);
       ctx.lineTo(c111[0],c111[1]); ctx.lineTo(c011[0],c011[1]);
       ctx.closePath();
       ctx.fillStyle = hexA(T.accent, 0.16); ctx.fill();
 
-      /* нижняя грань — пунктиром */
       seg(c000,c100,T.axis,1.4,[5,5]);
       seg(c100,c110,T.axis,1.4,[5,5]);
       seg(c110,c010,T.axis,1.4,[5,5]);
       seg(c010,c000,T.axis,1.4,[5,5]);
 
-      /* верхняя грань и рёбра */
       seg(c001,c101,T.axis,1.8);
       seg(c101,c111,T.axis,1.8);
       seg(c111,c011,T.axis,1.8);
@@ -1694,7 +1857,6 @@ $(function(){
       seg(c010,c011,T.axis,1.8);
       seg(c110,c111,T.axis,1.8);
 
-      /* векторы */
       var O = c000;
       arrow(ctx,O[0],O[1],c100[0],c100[1],T.accent,2.8);
       arrow(ctx,O[0],O[1],c010[0],c010[1],T.accent4,2.8);
@@ -1704,9 +1866,8 @@ $(function(){
       label(ctx,c010[0]+8,c010[1]+14,'b',T.accent4);
       label(ctx,c001[0]-20,c001[1]-6,'c',T.accent3);
 
-      var vol = Math.abs(la*Math.cos(0)*0) ; /* placeholder */
       var area = Math.abs(A[0]*B[1] - A[1]*B[0]);
-      vol = area * hh;
+      var vol = area * hh;
 
       $('#mixedInfo').html(
         'V = |(a,b,c)| = |a×b|·h = ' + fmt(area) + ' · ' + fmt(hh) +
@@ -1796,10 +1957,6 @@ $(function(){
   /* ---------- первичная отрисовка ---------- */
   showPage(location.hash.slice(1) || 'home');
   setTimeout(Viz.redraw, 60);
-  /* на случай, если MathJax ещё догружается */
-  if(window.MathJax && MathJax.startup && MathJax.startup.promise){
-    MathJax.startup.promise.then(function(){ /* уже отрисовано */ });
-  }
 });
 </script>
 </body>
