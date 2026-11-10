@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Коллоквиум по ЛА и АГ · подготовка</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+/* MathJax: рендер \(...\) и \[...\] */
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']],
+    processEscapes: true
+  },
+  options: {
+    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+  }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+:root{
+  --bg:#f5f7fc; --panel:#ffffff; --panel2:#eef2f9; --text:#141c2b; --muted:#5a6a86;
+  --border:#dbe2f0; --grid:#e6ebf6; --axis:#9aa8c0;
+  --accent:#2f6df6; --accent2:#e0533d; --accent3:#12a06f; --accent4:#a855f7;
+  --shadow:0 2px 10px rgba(30,50,90,.07);
+}
+[data-theme="dark"]{
+  --bg:#0d131f; --panel:#151d2c; --panel2:#1b2436; --text:#e6ecf8; --muted:#93a3bd;
+  --border:#26324a; --grid:#1e283b; --axis:#4a5a77;
+  --accent:#5b8dff; --accent2:#ff7a5c; --accent3:#3ddba0; --accent4:#c084fc;
+  --shadow:0 2px 14px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);font-size:15.5px;line-height:1.6;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+  transition:background .25s,color .25s;
+}
+mjx-container{color:inherit}
+/* ---------- header ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:var(--panel);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
+.topbar-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:9px 18px;flex-wrap:wrap}
+.brand{font-weight:800;font-size:15px;white-space:nowrap}
+.brand b{color:var(--accent)}
+.nav{display:flex;gap:3px;overflow-x:auto;flex:1;padding-bottom:2px}
+.nav a{white-space:nowrap;padding:6px 10px;border-radius:8px;text-decoration:none;color:var(--muted);font-size:13.5px;font-weight:600;transition:.15s}
+.nav a:hover{background:var(--panel2);color:var(--text)}
+.nav a.active{background:var(--accent);color:#fff}
+#themeToggle{border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:10px;padding:6px 11px;cursor:pointer;font-size:15px;line-height:1}
+#themeToggle:hover{filter:brightness(.95)}
+/* ---------- layout ---------- */
+main{max-width:1180px;margin:0 auto;padding:22px 18px 90px}
+.page{display:none;animation:fade .25s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h1{font-size:26px;margin:4px 0 6px;letter-spacing:-.3px}
+h2{font-size:19px;margin:26px 0 10px}
+h3{font-size:16px;margin:18px 0 8px}
+.lead{color:var(--muted);margin:0 0 20px;max-width:760px}
+/* ---------- cards ---------- */
+.q{background:var(--panel);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
+.q-head{display:flex;gap:10px;align-items:center;padding:12px 15px;cursor:pointer;user-select:none;transition:background .15s}
+.q-head:hover{background:var(--panel2)}
+.q-num{flex:0 0 auto;min-width:28px;height:28px;padding:0 6px;border-radius:8px;background:var(--panel2);color:var(--muted);display:grid;place-items:center;font-size:13px;font-weight:800}
+.q-title{flex:1;font-weight:650}
+.chev{color:var(--muted);transition:transform .2s;font-size:12px}
+.q.open .chev{transform:rotate(90deg)}
+.q-body{display:none;padding:4px 16px 16px;border-top:1px solid var(--border)}
+.q-check{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:2px solid var(--border);background:transparent;color:transparent;cursor:pointer;font-size:12px;display:grid;place-items:center;transition:.15s}
+.q-check:hover{border-color:var(--accent3)}
+.q.learned .q-check{background:var(--accent3);border-color:var(--accent3);color:#fff}
+.q.learned .q-title{opacity:.75}
+/* ---------- content bits ---------- */
+.fml{font-family:'Cambria Math',Georgia,'Times New Roman',serif;font-size:16.5px;line-height:2;background:var(--panel2);border-radius:10px;padding:8px 14px;margin:10px 0;overflow-x:auto}
+.mat{display:inline-grid;gap:2px 12px;padding:3px 9px;border-left:2px solid currentColor;border-right:2px solid currentColor;border-radius:3px;vertical-align:middle;font-style:normal;line-height:1.35}
+.mat>span{text-align:center}
+ul.tight{margin:8px 0;padding-left:22px}
+ul.tight li{margin:4px 0}
+.note{background:var(--panel2);border-radius:10px;padding:10px 13px;margin:10px 0;font-size:14.5px;color:var(--muted)}
+.intuition{border-left:3px solid var(--accent3);background:color-mix(in srgb,var(--accent3) 9%,transparent);padding:10px 14px;border-radius:0 10px 10px 0;margin:12px 0}
+.proof{border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:10px 14px;border-radius:0 10px 10px 0;margin:12px 0}
+.intuition b,.proof b{display:block;margin-bottom:4px;font-size:13.5px;letter-spacing:.3px;text-transform:uppercase}
+.intuition b{color:var(--accent3)}
+.proof b{color:var(--accent)}
+.qed{float:right;color:var(--muted);font-weight:700}
+/* ---------- viz ---------- */
+.viz{background:var(--panel2);border-radius:14px;padding:14px;margin:12px 0}
+.viz canvas{width:100%;height:330px;display:block;border-radius:10px;background:var(--panel);touch-action:none}
+.viz .hint{color:var(--muted);font-size:13.5px;margin:8px 0 0}
+.srow{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:14px}
+.srow label{flex:0 0 92px;color:var(--muted);font-weight:600}
+.srow input[type=range]{flex:1;accent-color:var(--accent);min-width:60px}
+.srow .sval{flex:0 0 46px;text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.mmul-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+.mmul-op{font-size:22px;color:var(--muted);font-weight:300}
+.mgrid{display:inline-grid;gap:4px;padding:6px 10px;border-left:2px solid var(--text);border-right:2px solid var(--text);border-radius:3px}
+.mcell{width:54px;height:34px;text-align:center;border:1px solid var(--border);border-radius:7px;background:var(--panel);color:var(--text);font-size:14px;font-family:inherit;transition:.12s}
+.mcell:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.mcell.hl{background:var(--accent);color:#fff;border-color:var(--accent)}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield}
+span.cval{display:grid;place-items:center;width:54px;height:34px;border-radius:7px;background:var(--panel);font-weight:700;transition:.12s}
+span.cval.hl{background:var(--accent);color:#fff}
+.mformula{margin-top:12px;text-align:center;font-size:15px;min-height:24px;color:var(--muted)}
+.mformula b{color:var(--text)}
+/* sarrus */
+.sarrus{display:flex;justify-content:center;margin-bottom:12px}
+.sgrid{display:grid;grid-template-columns:repeat(3,auto);gap:6px 16px;padding:8px 14px;border-left:2px solid var(--text);border-right:2px solid var(--text);width:max-content;border-radius:3px}
+.sgrid span{padding:4px 6px;border-radius:6px;transition:.12s;min-width:44px;text-align:center}
+.sgrid span.hl{background:var(--accent);color:#fff}
+.terms{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.term{cursor:pointer;border-radius:8px;padding:6px 11px;border:1px solid var(--border);background:var(--panel);color:var(--text);font-size:13.5px;font-family:'Cambria Math',Georgia,serif;transition:.12s}
+.term.plus:hover{background:var(--accent3);border-color:var(--accent3);color:#fff}
+.term.minus:hover{background:var(--accent2);border-color:var(--accent2);color:#fff}
+/* progress */
+.prog-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 15px;margin-bottom:9px;box-shadow:var(--shadow)}
+.prog-title{font-weight:650;font-size:14.5px;margin-bottom:7px}
+.prog{display:flex;align-items:center;gap:10px}
+.bar{height:8px;background:var(--panel2);border-radius:99px;overflow:hidden;flex:1}
+.bar-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent4));transition:width .35s}
+.prog-label{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;flex:0 0 auto}
+/* buttons / misc */
+.btn{border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:10px;padding:8px 14px;cursor:pointer;font:inherit;font-size:14px;font-weight:600;transition:.15s}
+.btn:hover{background:var(--panel2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{filter:brightness(1.08)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}
+.ticket{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
+.ticket ol{margin:8px 0 0;padding-left:22px}
+.ticket li{margin:7px 0}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);background:var(--panel2);border-radius:6px;padding:2px 7px;margin-right:8px;vertical-align:middle}
+.rule{display:flex;gap:12px;padding:9px 0;border-bottom:1px dashed var(--border)}
+.rule:last-child{border-bottom:0}
+.rule-n{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel2);color:var(--muted);display:grid;place-items:center;font-size:12.5px;font-weight:800}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;background:var(--panel2);padding:1px 6px;border-radius:5px;border:1px solid var(--border)}
+@media(max-width:640px){
+  .viz canvas{height:260px}
+  h1{font-size:22px}
+  .srow label{flex:0 0 70px;font-size:13px}
+  .mcell,span.cval{width:44px;height:30px;font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">ЛА&nbsp;и&nbsp;АГ · <b>коллоквиум 2026</b></div>
+    <nav class="nav">
+      <a href="#home" data-page="home">О коллоквиуме</a>
+      <a href="#b1" data-page="b1">1 · Матрицы</a>
+      <a href="#b2" data-page="b2">2 · Определители</a>
+      <a href="#b3" data-page="b3">3 · Обратная · СЛАУ</a>
+      <a href="#b4" data-page="b4">4 · Векторы</a>
+      <a href="#b5" data-page="b5">5 · Произведения</a>
+      <a href="#b6" data-page="b6">6 · Доказательства</a>
+      <a href="#ticket" data-page="ticket">Билет / тренажёр</a>
+    </nav>
+    <button id="themeToggle" title="Сменить тему">🌙</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ==================== HOME ==================== -->
+<section class="page" id="home">
+  <h1>Коллоквиум по линейной алгебре и аналитической геометрии</h1>
+  <p class="lead">Лектор потока: Тарасенко А. А. Здесь собраны все вопросы, интуиция и доказательства, интерактивные картинки и тренажёр билетов.</p>
+
+  <h2>Организация коллоквиума</h2>
+  <div class="q open" style="box-shadow:var(--shadow)">
+    <div class="q-head" style="cursor:default"><span class="q-title">Правила и баллы</span></div>
+    <div class="q-body" style="display:block">
+      <div class="rule"><div class="rule-n">1</div><div>Коллоквиум состоит из двух частей: <b>письменной</b> (ответы на вопросы билета) и <b>устной</b>.</div></div>
+      <div class="rule"><div class="rule-n">2</div><div>В письменной части <b>пять вопросов</b> — по одному из каждого блока: определения, понятия и утверждения с доказательством.</div></div>
+      <div class="rule"><div class="rule-n">3</div><div>За вопрос из блоков 1–5 максимально можно получить <b>1 балл</b>.</div></div>
+      <div class="rule"><div class="rule-n">4</div><div>За вопрос из блока 6 — максимум <b>3 балла</b>.</div></div>
+      <div class="rule"><div class="rule-n">5</div><div>Суммарно за письменную часть — не более <b>8 баллов</b>.</div></div>
+      <div class="rule"><div class="rule-n">6</div><div>Время на письменную часть — <b>40–45 минут</b>.</div></div>
+      <div class="rule"><div class="rule-n">7</div><div>Устная часть сдаётся отдельно, в назначенное преподавателем внеучебное время. От устной части можно отказаться — тогда баллы начислят только за письменную, если за неё набрано <b>не менее 4 баллов</b>.</div></div>
+      <div class="rule"><div class="rule-n">8</div><div>Преподаватель может назначить обязательное собеседование при подозрении на списывание.</div></div>
+      <div class="rule"><div class="rule-n">9</div><div>В устной части: определение, которого не было в билете, или формулировка теорем — всего <b>6 вопросов</b>, каждый максимум 1 балл.</div></div>
+      <div class="rule"><div class="rule-n">10</div><div>Максимум за устную часть — <b>6 баллов</b>.</div></div>
+      <div class="rule"><div class="rule-n">11</div><div>Общая оценка — сумма письменной и устной частей, максимум <b>14 баллов</b>.</div></div>
+      <div class="rule"><div class="rule-n">12</div><div>Если совокупно набрано <b>менее 4 баллов</b> — в ОРИОКС выставляется 0 с последующей пересдачей.</div></div>
+      <div class="rule"><div class="rule-n">13</div><div>Число пересдач ограничено <b>тремя попытками</b>.</div></div>
+    </div>
+  </div>
+
+  <h2>Мой прогресс</h2>
+  <p class="lead" style="margin-bottom:12px">Отмечайте галочкой слева от вопроса те темы, которые уже разобраны — прогресс сохраняется в браузере.</p>
+  <div id="prog-total" class="prog-card" style="border:2px solid var(--accent)">
+    <div class="prog-title">Всего разобрано</div>
+    <div class="prog"><div class="bar"><div class="bar-fill"></div></div><span class="prog-label">0 / 0</span></div>
+  </div>
+  <div class="prog-card"><div class="prog-title">Блок 1 · Матрицы и операции над ними</div><div class="prog" id="prog-b1"><div class="bar"><div class="bar-fill"></div></div><span class="prog-label">0 / 0</span></div></div>
+  <div class="prog-card"><div class="prog-title">Блок 2 · Определители</div><div class="prog" id="prog-b2"><div class="bar"><div class="bar-fill"></div></div><span class="prog-label">0 / 0</span></div></div>
+  <div class="prog-card"><div class="prog-title">Блок 3 · Обратные матрицы, СЛАУ</div><div class="prog" id="prog-b3"><div class="bar"><div class="bar-fill"></div></div><span class="prog-label">0 / 0</span></div></div>
+  <div class="prog-card"><div class="prog-title">Блок 4 · Векторы и базис</div><div class="prog" id="prog-b4"><div class="bar"><div class="bar-fill"></div></div><span class="prog-label">0 / 0</span></div></div>
+  <div class="prog-card"><div class="prog-title">Блок 5 · Скалярное, векторное, смешанное</div><div class="prog" id="prog-b5"><div class="bar"><div class="bar-fill"></div></div><span class="prog-label">0 / 0</span></div></div>
+  <div class="prog-card"><div class="prog-title">Блок 6 · Теоретические вопросы с доказательством</div><div class="prog" id="prog-b6"><div class="bar"><div class="bar-fill"></div></div><span class="prog-label">0 / 0</span></div></div>
+</section>
+
+<!-- ==================== BLOCK 1 ==================== -->
+<section class="page" id="b1">
+  <h1>Блок 1 · Матрицы. Операции над матрицами</h1>
+  <p class="lead">Каждый вопрос блока оценивается в 1 балл.</p>
+  <div class="btnrow"><button class="btn" data-toggle-all="open">Развернуть все</button><button class="btn" data-toggle-all="close">Свернуть все</button></div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">1</span><span class="q-title">Матрица. Виды матриц. Структура матрицы</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Матрица</b> размера \(m\times n\) — прямоугольная таблица чисел, расположенных в \(m\) строках и \(n\) столбцах.</p>
+      <div class="fml">A = (a<sub>ij</sub>), &nbsp; i = 1,…,m, &nbsp; j = 1,…,n</div>
+      <p>Число \(a_{ij}\) называется <b>элементом</b>, стоящим на пересечении \(i\)-й строки и \(j\)-го столбца.</p>
+      <p><b>Виды матриц:</b></p>
+      <ul class="tight">
+        <li><b>квадратная</b> (\(m=n\), порядок \(n\)) и <b>прямоугольная</b>;</li>
+        <li><b>нулевая</b> \(O\) (все элементы 0) и <b>единичная</b> \(E\) (квадратная, \(e_{ii}=1\), остальные 0);</li>
+        <li><b>диагональная</b> (\(a_{ij}=0\) при \(i\ne j\)), <b>скалярная</b> (диагональная с равными элементами);</li>
+        <li><b>верхнетреугольная</b> (\(a_{ij}=0\) при \(i>j\)) и <b>нижнетреугольная</b> (\(a_{ij}=0\) при \(i<j\));</li>
+        <li><b>симметричная</b> (\(A^{T}=A\)), <b>кососимметричная</b> (\(A^{T}=-A\));</li>
+        <li><b>матрица-строка</b> \(1\times n\), <b>матрица-столбец</b> \(m\times 1\) (векторы);</li>
+        <li><b>ступенчатая</b> матрица.</li>
+      </ul>
+      <p><b>Структура:</b> главная диагональ \(a_{11},a_{22},\dots,a_{nn}\); побочная диагональ; \(i\)-я строка \((a_{i1}\ a_{i2}\ \dots\ a_{in})\); \(j\)-й столбец — вертикальный вектор.</p>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">2</span><span class="q-title">Сложение матриц. Свойства операции</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Определение.</b> Сумма \(A+B\) определена только для матриц <b>одинакового размера</b>; результат — матрица того же размера:</p>
+      <div class="fml">(A+B)<sub>ij</sub> = a<sub>ij</sub> + b<sub>ij</sub></div>
+      <p><b>Свойства</b> (для любых матриц одного размера):</p>
+      <ul class="tight">
+        <li>\(A+B=B+A\) — коммутативность;</li>
+        <li>\((A+B)+C=A+(B+C)\) — ассоциативность;</li>
+        <li>\(A+O=A\) — существование нейтрального элемента;</li>
+        <li>\(A+(-A)=O\), где \((-A)_{ij}=-a_{ij}\) — существование противоположной матрицы.</li>
+      </ul>
+      <p>То есть множество матриц данного размера по сложению — <b>абелева группа</b>.</p>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">3</span><span class="q-title">Умножение матрицы на число. Свойства</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Определение.</b> Произведение матрицы \(A\) на число \(\lambda\):</p>
+      <div class="fml">(λA)<sub>ij</sub> = λ · a<sub>ij</sub></div>
+      <p><b>Свойства:</b></p>
+      <ul class="tight">
+        <li>\(\lambda(\mu A)=(\lambda\mu)A\);</li>
+        <li>\((\lambda+\mu)A=\lambda A+\mu A\);</li>
+        <li>\(\lambda(A+B)=\lambda A+\lambda B\);</li>
+        <li>\(1\cdot A=A\), &nbsp; \(0\cdot A=O\), &nbsp; \((-1)A=-A\).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">4</span><span class="q-title">Транспонирование матриц. Свойства</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Определение.</b> Транспонированная матрица \(A^{T}\) размера \(n\times m\) получается заменой строк столбцами:</p>
+      <div class="fml">(A<sup>T</sup>)<sub>ij</sub> = a<sub>ji</sub></div>
+      <p><b>Свойства:</b></p>
+      <ul class="tight">
+        <li>\((A^{T})^{T}=A\);</li>
+        <li>\((A+B)^{T}=A^{T}+B^{T}\);</li>
+        <li>\((\lambda A)^{T}=\lambda A^{T}\);</li>
+        <li>\((AB)^{T}=B^{T}A^{T}\) — <b>порядок меняется!</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">5</span><span class="q-title">Умножение вектор-строки на вектор-столбец</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p>Пусть \(x=(x_1\ x_2\ \dots\ x_n)\) — строка \(1\times n\), а \(y=(y_1\ y_2\ \dots\ y_n)^{T}\) — столбец \(n\times 1\). Тогда</p>
+      <div class="fml">x·y = x<sub>1</sub>y<sub>1</sub> + x<sub>2</sub>y<sub>2</sub> + … + x<sub>n</sub>y<sub>n</sub> = Σ<sub>k=1</sub><sup>n</sup> x<sub>k</sub>y<sub>k</sub></div>
+      <p>В результате получается <b>число</b> (матрица \(1\times 1\)) — это в точности <b>скалярное произведение</b> векторов \(x\) и \(y\).</p>
+      <p>Пример: \((1\ 2\ 3)\cdot(4\ -1\ 2)^T = 1\cdot4 + 2\cdot(-1) + 3\cdot2 = 8\).</p>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">6</span><span class="q-title">Согласованность. Произведение матриц и его свойства</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Согласованность.</b> Матрицы \(A\) размера \(m\times k\) и \(B\) размера \(k\times n\) <b>согласованы</b>, если число столбцов \(A\) равно числу строк \(B\).</p>
+      <p><b>Произведение</b> \(C=AB\) — матрица размера \(m\times n\):</p>
+      <div class="fml">c<sub>ij</sub> = Σ<sub>s=1</sub><sup>k</sup> a<sub>is</sub>b<sub>sj</sub> &nbsp;&nbsp;(i-я строка A · j-й столбец B)</div>
+      <p><b>Свойства:</b></p>
+      <ul class="tight">
+        <li>\((AB)C=A(BC)\) — ассоциативность;</li>
+        <li>\(A(B+C)=AB+AC\), \((A+B)C=AC+BC\) — дистрибутивность;</li>
+        <li>\((\lambda A)B=\lambda(AB)=A(\lambda B)\);</li>
+        <li>\(AE=EA=A\); &nbsp; \(AO=OA=O\);</li>
+        <li>\((AB)^{T}=B^{T}A^{T}\); &nbsp; \(\det(AB)=\det A\cdot\det B\);</li>
+        <li>в общем случае \(AB\ne BA\) — <b>некоммутативность</b>;</li>
+        <li>из \(AB=O\) <b>не следует</b>, что \(A=O\) или \(B=O\) (делители нуля).</li>
+      </ul>
+
+      <div class="viz">
+        <div class="mmul-wrap">
+          <div id="mmA"></div>
+          <span class="mmul-op">×</span>
+          <div id="mmB"></div>
+          <span class="mmul-op">=</span>
+          <div id="mmC"></div>
+        </div>
+        <div class="mformula" id="mmFormula">Наведите курсор на элемент произведения</div>
+        <p class="hint">Числа в матрицах A и B можно менять. При наведении на элемент \(c_{ij}\) подсвечиваются \(i\)-я строка \(A\) и \(j\)-й столбец \(B\), из которых он получается.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== BLOCK 2 ==================== -->
+<section class="page" id="b2">
+  <h1>Блок 2 · Определители</h1>
+  <p class="lead">Каждый вопрос блока оценивается в 1 балл.</p>
+  <div class="btnrow"><button class="btn" data-toggle-all="open">Развернуть все</button><button class="btn" data-toggle-all="close">Свернуть все</button></div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">7</span><span class="q-title">Определитель матрицы 2-го порядка</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <div class="fml">Δ = <span class="mat" style="grid-template-columns:repeat(2,auto)"><span>a</span><span>b</span><span>c</span><span>d</span></span> = ad − bc</div>
+      <p>Определитель существует только у <b>квадратной</b> матрицы.</p>
+      <p><b>Геометрический смысл:</b> \(|ad-bc|\) — площадь параллелограмма, построенного на векторах-столбцах \((a,c)\) и \((b,d)\). Знак показывает ориентацию (направление обхода).</p>
+      <div class="viz">
+        <canvas id="cvDet2"></canvas>
+        <div class="srow"><label>a</label><input type="range" id="d2a" min="-3" max="3" step="0.25" value="2"><span class="sval" id="d2a-v">2</span></div>
+        <div class="srow"><label>c</label><input type="range" id="d2c" min="-3" max="3" step="0.25" value="1"><span class="sval" id="d2c-v">1</span></div>
+        <div class="srow"><label>b</label><input type="range" id="d2b" min="-3" max="3" step="0.25" value="0.5"><span class="sval" id="d2b-v">0.5</span></div>
+        <div class="srow"><label>d</label><input type="range" id="d2d" min="-3" max="3" step="0.25" value="2"><span class="sval" id="d2d-v">2</span></div>
+        <p class="hint" id="det2info"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">8</span><span class="q-title">Определитель 3-го порядка (правило треугольника / Саррюса)</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <div class="fml">
+        Δ = a<sub>11</sub>a<sub>22</sub>a<sub>33</sub> + a<sub>12</sub>a<sub>23</sub>a<sub>31</sub> + a<sub>13</sub>a<sub>21</sub>a<sub>32</sub>
+        − a<sub>13</sub>a<sub>22</sub>a<sub>31</sub> − a<sub>11</sub>a<sub>23</sub>a<sub>32</sub> − a<sub>12</sub>a<sub>21</sub>a<sub>33</sub>
+      </div>
+      <p>Три произведения «по главным диагоналям» (с плюсом) и три — «по побочным» (с минусом). Наведите курсор на слагаемое, чтобы увидеть, из каких элементов оно составлено.</p>
+      <div class="viz">
+        <div class="sarrus">
+          <div class="sgrid" id="sarrusGrid">
+            <span data-c="11">a<sub>11</sub></span><span data-c="12">a<sub>12</sub></span><span data-c="13">a<sub>13</sub></span>
+            <span data-c="21">a<sub>21</sub></span><span data-c="22">a<sub>22</sub></span><span data-c="23">a<sub>23</sub></span>
+            <span data-c="31">a<sub>31</sub></span><span data-c="32">a<sub>32</sub></span><span data-c="33">a<sub>33</sub></span>
+          </div>
+        </div>
+        <div class="terms" id="sarrusTerms">
+          <button class="term plus" data-cells="11 22 33">+ a₁₁a₂₂a₃₃</button>
+          <button class="term plus" data-cells="12 23 31">+ a₁₂a₂₃a₃₁</button>
+          <button class="term plus" data-cells="13 21 32">+ a₁₃a₂₁a₃₂</button>
+          <button class="term minus" data-cells="13 22 31">− a₁₃a₂₂a₃₁</button>
+          <button class="term minus" data-cells="11 23 32">− a₁₁a₂₃a₃₂</button>
+          <button class="term minus" data-cells="12 21 33">− a₁₂a₂₁a₃₃</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">9</span><span class="q-title">Подстановки. Инверсии. Чётные и нечётные подстановки</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Подстановка</b> степени \(n\) — биективное отображение множества \(\{1,2,\dots,n\}\) в себя. Записывают:</p>
+      <div class="fml">σ = <span class="mat" style="grid-template-columns:repeat(3,auto)"><span>1</span><span>2</span><span>…</span><span>n</span><span>σ(1)</span><span>σ(2)</span><span>…</span><span>σ(n)</span></span></div>
+      <p>Всего подстановок степени \(n\) ровно \(n!\).</p>
+      <p><b>Инверсия</b> — пара \((i,j)\) такая, что \(i<j\), но \(\sigma(i)>\sigma(j)\). Число инверсий обозначают \(N(\sigma)\).</p>
+      <p><b>Чётность.</b> Подстановка <b>чётная</b>, если \(N(\sigma)\) чётно, и <b>нечётная</b>, если \(N(\sigma)\) нечётно. Знак подстановки:</p>
+      <div class="fml">sgn σ = (−1)<sup>N(σ)</sup> = &nbsp;+1 для чётной, &nbsp;−1 для нечётной</div>
+      <p>Тождественная подстановка чётная. Перестановка двух элементов меняет чётность.</p>
+      <div class="note">Пример: σ = (1 2 3 | 3 1 2). Пары: (1,2): 3&gt;1 — инверсия; (1,3): 3&gt;2 — инверсия; (2,3): 1&lt;2 — нет. \(N=2\) — подстановка чётная, sgn = +1.</div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">10</span><span class="q-title">Определитель матрицы n-го порядка</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <div class="fml">det A = Σ<sub>σ∈S<sub>n</sub></sub> sgn(σ) · a<sub>1σ(1)</sub> a<sub>2σ(2)</sub> … a<sub>nσ(n)</sub></div>
+      <p>Сумма берётся по всем \(n!\) подстановкам степени \(n\). В каждом слагаемом из каждой строки и каждого столбца взят ровно один элемент.</p>
+      <ul class="tight">
+        <li>при \(n=1\): \(\det A = a_{11}\);</li>
+        <li>при \(n=2\): \(a_{11}a_{22}-a_{12}a_{21}\);</li>
+        <li>при \(n=3\) получается как раз правило треугольника;</li>
+        <li>для \(n=1\): \(\det(a_{11})=a_{11}\).</li>
+      </ul>
+      <p>Ровно половина слагаемых входит со знаком «+», половина — со знаком «−».</p>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">11</span><span class="q-title">Свойства определителя n-го порядка</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <ul class="tight">
+        <li>\(\det A^{T}=\det A\) — строки и столбцы равноправны;</li>
+        <li>при <b>перестановке двух строк</b> (столбцов) определитель меняет знак;</li>
+        <li><b>общий множитель</b> любой строки (столбца) можно вынести за знак определителя: \(\det(\dots,\lambda r_i,\dots)=\lambda\det(\dots,r_i,\dots)\);</li>
+        <li>если в матрице есть <b>нулевая строка</b> — определитель равен 0;</li>
+        <li>если две строки <b>равны</b> или <b>пропорциональны</b> — определитель равен 0;</li>
+        <li>если к строке прибавить другую строку, умноженную на число, определитель <b>не изменится</b>;</li>
+        <li>\(\det(AB)=\det A\cdot\det B\);</li>
+        <li>\(\det(\lambda A)=\lambda^{n}\det A\) для матрицы порядка \(n\);</li>
+        <li>\(\det E=1\); &nbsp; \(\det A^{-1}=1/\det A\);</li>
+        <li>определитель <b>полилинеен</b> по каждой строке, но <b>не аддитивен</b>: \(\det(A+B)\ne\det A+\det B\).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">12</span><span class="q-title">Миноры и алгебраические дополнения. Теорема Лапласа</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Минор</b> \(M_{ij}\) — определитель матрицы, полученной вычёркиванием \(i\)-й строки и \(j\)-го столбца (порядок \(n-1\)).</p>
+      <p><b>Алгебраическое дополнение:</b></p>
+      <div class="fml">A<sub>ij</sub> = (−1)<sup>i+j</sup> M<sub>ij</sub></div>
+      <p><b>Теорема Лапласа (разложение по строке).</b> Для любой квадратной матрицы и любой строки \(i\):</p>
+      <div class="fml">det A = Σ<sub>j=1</sub><sup>n</sup> a<sub>ij</sub> A<sub>ij</sub></div>
+      <p><b>Следствие (теорема замещения).</b> Сумма произведений элементов одной строки на алгебраические дополнения другой строки равна нулю:</p>
+      <div class="fml">Σ<sub>j</sub> a<sub>kj</sub> A<sub>ij</sub> = 0 &nbsp;&nbsp; при k ≠ i</div>
+      <p><b>Обобщённая теорема Лапласа:</b> определитель равен сумме произведений всех миноров \(k\)-го порядка, выбранных из данных \(k\) строк, на их алгебраические дополнения.</p>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">13</span><span class="q-title">Элементарные преобразования. Линейная зависимость строк</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Элементарные преобразования строк (столбцов):</b></p>
+      <ul class="tight">
+        <li>перестановка двух строк → определитель <b>меняет знак</b>;</li>
+        <li>умножение строки на \(\lambda\ne0\) → определитель <b>умножается на \(\lambda\)</b>;</li>
+        <li>прибавление к строке другой строки, умноженной на число → определитель <b>не меняется</b>.</li>
+      </ul>
+      <p><b>Линейная комбинация</b> строк \(r_1,\dots,r_m\) — выражение \(\lambda_1r_1+\dots+\lambda_mr_m\).</p>
+      <p>Строки <b>линейно зависимы</b>, если существует нетривиальный набор \(\lambda_i\) (не все нули), для которого комбинация равна нулевой строке. Иначе — <b>линейно независимы</b>.</p>
+      <p><b>Критерии:</b></p>
+      <ul class="tight">
+        <li>строки линейно зависимы ⟺ одна из них есть линейная комбинация остальных;</li>
+        <li>для квадратной матрицы: \(\det A=0\) ⟺ строки (и столбцы) линейно зависимы ⟺ \(\operatorname{rang}A&lt;n\).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">14</span><span class="q-title">Нахождение определителя приведением к треугольному виду</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Идея.</b> Определитель треугольной матрицы равен произведению элементов главной диагонали. Поэтому матрицу приводят к верхнетреугольному виду преобразованиями 3-го типа (определитель не меняется) и перестановками строк (следим за знаком).</p>
+      <p><b>Алгоритм:</b></p>
+      <ul class="tight">
+        <li>выбираем ведущий элемент в 1-м столбце (если он 0 — меняем строки местами, запомнив смену знака);</li>
+        <li>обнуляем все элементы под ним, прибавляя к \(i\)-й строке первую, умноженную на подходящий коэффициент;</li>
+        <li>переходим ко 2-му столбцу и так далее;</li>
+        <li>перемножаем диагональные элементы, учитывая знак от перестановок.</li>
+      </ul>
+      <p><b>Пример.</b></p>
+      <div class="fml">
+        Δ = <span class="mat" style="grid-template-columns:repeat(3,auto)"><span>1</span><span>2</span><span>3</span><span>2</span><span>5</span><span>7</span><span>3</span><span>7</span><span>9</span></span>
+        → <span class="mat" style="grid-template-columns:repeat(3,auto)"><span>1</span><span>2</span><span>3</span><span>0</span><span>1</span><span>1</span><span>0</span><span>1</span><span>0</span></span>
+        → <span class="mat" style="grid-template-columns:repeat(3,auto)"><span>1</span><span>2</span><span>3</span><span>0</span><span>1</span><span>1</span><span>0</span><span>0</span><span>−1</span></span>
+      </div>
+      <p>Здесь \(r_2-2r_1\), \(r_3-3r_1\), затем \(r_3-r_2\). Получаем \(\Delta = 1\cdot1\cdot(-1)=-1\).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== BLOCK 3 ==================== -->
+<section class="page" id="b3">
+  <h1>Блок 3 · Обратные матрицы. Матричные уравнения. СЛАУ</h1>
+  <p class="lead">Каждый вопрос блока оценивается в 1 балл.</p>
+  <div class="btnrow"><button class="btn" data-toggle-all="open">Развернуть все</button><button class="btn" data-toggle-all="close">Свернуть все</button></div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">15</span><span class="q-title">Обратная матрица</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Определение.</b> Квадратная матрица \(A\) называется <b>обратимой</b>, если существует матрица \(A^{-1}\) такая, что</p>
+      <div class="fml">A·A<sup>−1</sup> = A<sup>−1</sup>·A = E</div>
+      <p><b>Единственность.</b> Если обратная существует, то она единственна.</p>
+      <p><b>Критерий существования.</b> \(A^{-1}\) существует ⟺ \(\det A\ne0\) (матрица <b>невырожденная</b>).</p>
+      <p><b>Свойства:</b></p>
+      <ul class="tight">
+        <li>\((A^{-1})^{-1}=A\);</li>
+        <li>\((AB)^{-1}=B^{-1}A^{-1}\);</li>
+        <li>\((A^{T})^{-1}=(A^{-1})^{T}\);</li>
+        <li>\(\det(A^{-1})=1/\det A\);</li>
+        <li>\((\lambda A)^{-1}=\frac1\lambda A^{-1}\) при \(\lambda\ne0\).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">16</span><span class="q-title">Нахождение обратной через присоединённую матрицу</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Присоединённая матрица</b> — транспонированная матрица алгебраических дополнений:</p>
+      <div class="fml">A* = (A<sub>ji</sub>) &nbsp;&nbsp;(на месте (i,j) стоит A<sub>ji</sub>)</div>
+      <p>По теореме Лапласа и теореме замещения: \(A\cdot A^{*}=(\det A)\cdot E\). Отсюда</p>
+      <div class="fml">A<sup>−1</sup> = (1 / det A) · A*</div>
+      <p><b>Для 2×2:</b></p>
+      <div class="fml">
+        <span class="mat" style="grid-template-columns:repeat(2,auto)"><span>a</span><span>b</span><span>c</span><span>d</span></span><sup>−1</sup> =
+        (1/(ad−bc)) · <span class="mat" style="grid-template-columns:repeat(2,auto)"><span>d</span><span>−b</span><span>−c</span><span>a</span></span>
+      </div>
+      <div class="note">На практике: считаем \(\det A\), затем все алгебраические дополнения \(A_{ij}\), записываем их в матрицу, <b>транспонируем</b> и делим на \(\det A\).</div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">17</span><span class="q-title">Нахождение обратной через расширенную матрицу</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Метод Гаусса–Жордана.</b> Приписываем справа единичную матрицу и элементарными преобразованиями <b>только строк</b> приводим левую часть к единичной:</p>
+      <div class="fml">(A | E) &nbsp;⟶&nbsp; (E | A<sup>−1</sup>)</div>
+      <p>Если левую часть не удаётся привести к \(E\) (появилась нулевая строка), то \(\det A=0\) и обратной матрицы нет.</p>
+      <div class="note">Плюс метода: не нужно считать \(n^{2}\) алгебраических дополнений, и сразу видно, обратима ли матрица.</div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">18</span><span class="q-title">Матричные уравнения AX = B и XA = B</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p>Если \(A\) — квадратная и \(\det A\ne0\), то:</p>
+      <div class="fml">AX = B &nbsp;⇒&nbsp; X = A<sup>−1</sup>B &nbsp;&nbsp;&nbsp;&nbsp; XA = B &nbsp;⇒&nbsp; X = BA<sup>−1</sup></div>
+      <p><b>Важно:</b> домножать нужно с той же стороны, с которой стоит \(A\), — иначе из-за некоммутативности получится неверно.</p>
+      <p>Размеры: в \(AX=B\) матрица \(A\) размера \(m\times m\), \(B\) — \(m\times k\), тогда \(X\) — \(m\times k\).</p>
+      <p>Если \(A\) необратима, уравнение превращается в набор СЛАУ (по столбцам \(X\)) и решается методом Гаусса; решение может не существовать или быть неединственным.</p>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">19</span><span class="q-title">Метод Крамера решения СЛАУ</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p>Для системы \(n\) уравнений с \(n\) неизвестными \(Ax=b\):</p>
+      <div class="fml">Δ = det A, &nbsp;&nbsp; Δ<sub>i</sub> = det A с заменой i-го столбца на столбец b</div>
+      <p>Если \(\Delta\ne0\), то система имеет <b>единственное</b> решение:</p>
+      <div class="fml">x<sub>i</sub> = Δ<sub>i</sub> / Δ, &nbsp; i = 1,…,n</div>
+      <p>Если \(\Delta=0\), метод Крамера не работает — нужно исследовать систему (Гаусс / Кронекер–Капелли).</p>
+      <div class="viz">
+        <canvas id="cvLines"></canvas>
+        <div class="srow"><label>k₁</label><input type="range" id="l1k" min="-3" max="3" step="0.25" value="1"><span class="sval" id="l1k-v">1</span></div>
+        <div class="srow"><label>m₁</label><input type="range" id="l1m" min="-3" max="3" step="0.25" value="1"><span class="sval" id="l1m-v">1</span></div>
+        <div class="srow"><label>k₂</label><input type="range" id="l2k" min="-3" max="3" step="0.25" value="-1"><span class="sval" id="l2k-v">-1</span></div>
+        <div class="srow"><label>m₂</label><input type="range" id="l2m" min="-3" max="3" step="0.25" value="1"><span class="sval" id="l2m-v">1</span></div>
+        <p class="hint" id="linesInfo"></p>
+      </div>
+      <p class="hint">Здесь система записана как \(y=k_1x+m_1,\; y=k_2x+m_2\). Аналог определителя \(\Delta=k_1-k_2\): если он не ноль — прямые пересекаются в единственной точке (решение единственно).</p>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">20</span><span class="q-title">Метод Гаусса решения СЛАУ</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Прямой ход.</b> Выписываем расширенную матрицу \((A|b)\) и элементарными преобразованиями строк приводим её к <b>ступенчатому</b> виду.</p>
+      <p><b>Обратный ход.</b> Идём снизу вверх и последовательно выражаем неизвестные.</p>
+      <p><b>Анализ результата:</b></p>
+      <ul class="tight">
+        <li>появилась строка \((0\ 0\ \dots\ 0\ |\ c)\), \(c\ne0\) → система <b>несовместна</b>;</li>
+        <li>число ненулевых строк \(r\) равно числу неизвестных \(n\) → <b>единственное</b> решение;</li>
+        <li>\(r&lt;n\) → <b>бесконечно много</b> решений, \(n-r\) свободных переменных.</li>
+      </ul>
+      <div class="note">Преимущество перед Крамером: работает при любых размерах, не требует \(\det A\ne0\), сразу показывает структуру множества решений.</div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">21</span><span class="q-title">Ранг матрицы. Ступенчатые матрицы</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Ранг</b> \(\operatorname{rang}A\) — максимальное число линейно независимых строк (равно максимальному числу линейно независимых столбцов).</p>
+      <p>Эквивалентно: <b>наивысший порядок ненулевого минора</b>.</p>
+      <p><b>Свойства:</b></p>
+      <ul class="tight">
+        <li>элементарные преобразования не меняют ранг;</li>
+        <li>\(\operatorname{rang}A = \operatorname{rang}A^{T}\);</li>
+        <li>\(\operatorname{rang}A \le \min(m,n)\);</li>
+        <li>\(\operatorname{rang}A = n\) для квадратной порядка \(n\) ⟺ \(\det A\ne0\).</li>
+      </ul>
+      <p><b>Ступенчатая матрица</b> — в каждой следующей строке первый ненулевой элемент стоит правее, чем в предыдущей. Ранг ступенчатой матрицы равен <b>числу ненулевых строк</b>.</p>
+      <p><b>Как искать ранг:</b> привести матрицу к ступенчатому виду и посчитать ненулевые строки.</p>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">22</span><span class="q-title">Теорема Кронекера–Капелли</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Теорема.</b> Система линейных уравнений \(Ax=b\) <b>совместна</b> тогда и только тогда, когда</p>
+      <div class="fml">rang A = rang (A | b)</div>
+      <p>то есть ранг матрицы системы равен рангу расширенной матрицы.</p>
+      <p><b>Следствия.</b> Пусть \(r=\operatorname{rang}A\), \(n\) — число неизвестных:</p>
+      <ul class="tight">
+        <li>\(r&lt;\operatorname{rang}(A|b)\) → решений нет;</li>
+        <li>\(r=\operatorname{rang}(A|b)=n\) → единственное решение;</li>
+        <li>\(r=\operatorname{rang}(A|b)&lt;n\) → бесконечно много решений, \(n-r\) свободных переменных.</li>
+      </ul>
+      <div class="note">Для однородной системы (\(b=0\)) совместность есть всегда: нулевое решение существует всегда.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== BLOCK 4 ==================== -->
+<section class="page" id="b4">
+  <h1>Блок 4 · Векторы. Базис</h1>
+  <p class="lead">Каждый вопрос блока оценивается в 1 балл.</p>
+  <div class="btnrow"><button class="btn" data-toggle-all="open">Развернуть все</button><button class="btn" data-toggle-all="close">Свернуть все</button></div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">23</span><span class="q-title">Геометрические векторы. Координаты вектора. Длина вектора</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Вектор</b> — направленный отрезок; задаётся длиной и направлением. Векторы считаются равными, если они одинаково направлены и имеют равные длины (свободные векторы).</p>
+      <p><b>Координаты</b> — коэффициенты разложения по базису: \(\vec a = a_1\vec e_1 + a_2\vec e_2 + a_3\vec e_3\); пишут \(\vec a=(a_1,a_2,a_3)\).</p>
+      <p><b>Длина</b> в декартовом (ортонормированном) базисе:</p>
+      <div class="fml">|a| = √(a<sub>1</sub>² + a<sub>2</sub>² + a<sub>3</sub>²)</div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">24</span><span class="q-title">Сложение векторов и умножение вектора на число</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Сложение</b> — по правилу треугольника (или параллелограмма). В координатах: \((a_1+b_1,\ a_2+b_2,\ a_3+b_3)\).</p>
+      <p><b>Умножение на число:</b> \(\lambda\vec a\) — вектор, длина которого \(|\lambda||\vec a|\), направление совпадает с \(\vec a\) при \(\lambda>0\) и противоположно при \(\lambda&lt;0\). В координатах: \((\lambda a_1,\lambda a_2,\lambda a_3)\).</p>
+      <p><b>Свойства:</b> \(a+b=b+a\); \((a+b)+c=a+(b+c)\); \(a+0=a\); \(a+(-a)=0\); \(\lambda(\mu a)=(\lambda\mu)a\); \((\lambda+\mu)a=\lambda a+\mu a\); \(\lambda(a+b)=\lambda a+\lambda b\).</p>
+      <div class="viz">
+        <canvas id="cvSum"></canvas>
+        <div class="srow"><label>a₁</label><input type="range" id="vs-ax" min="-3" max="3" step="0.25" value="2"><span class="sval" id="vs-ax-v">2</span></div>
+        <div class="srow"><label>a₂</label><input type="range" id="vs-ay" min="-3" max="3" step="0.25" value="1"><span class="sval" id="vs-ay-v">1</span></div>
+        <div class="srow"><label>b₁</label><input type="range" id="vs-bx" min="-3" max="3" step="0.25" value="-1"><span class="sval" id="vs-bx-v">-1</span></div>
+        <div class="srow"><label>b₂</label><input type="range" id="vs-by" min="-3" max="3" step="0.25" value="2"><span class="sval" id="vs-by-v">2</span></div>
+        <p class="hint" id="sumInfo"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">25</span><span class="q-title">Коллинеарные и компланарные векторы</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Коллинеарные</b> — лежат на параллельных прямых (или на одной прямой).</p>
+      <div class="fml">a ∥ b &nbsp;⟺&nbsp; a = λb &nbsp;(λ ≠ 0)</div>
+      <p><b>Компланарные</b> — лежат в параллельных плоскостях (или в одной плоскости).</p>
+      <div class="fml">a, b, c компланарны ⟺ c = αa + βb</div>
+      <p>Нулевой вектор коллинеарен любому вектору.</p>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">26</span><span class="q-title">Линейная независимость векторов</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p>Система векторов \(a_1,\dots,a_k\) называется <b>линейно независимой</b>, если равенство</p>
+      <div class="fml">λ<sub>1</sub>a<sub>1</sub> + λ<sub>2</sub>a<sub>2</sub> + … + λ<sub>k</sub>a<sub>k</sub> = 0</div>
+      <p>возможно <b>только</b> при \(\lambda_1=\dots=\lambda_k=0\). Иначе система <b>линейно зависима</b>.</p>
+      <p><b>Эквивалентные формулировки:</b> система зависима ⟺ один из векторов линейно выражается через остальные.</p>
+      <p><b>Геометрический смысл:</b></p>
+      <ul class="tight">
+        <li>два вектора зависимы ⟺ они коллинеарны;</li>
+        <li>три вектора зависимы ⟺ они компланарны;</li>
+        <li>любые четыре вектора в пространстве линейно зависимы.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">27</span><span class="q-title">Базис и координаты вектора</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Базис</b> — упорядоченная линейно независимая система векторов, через которую линейно выражается любой вектор пространства.</p>
+      <p><b>Свойства:</b></p>
+      <ul class="tight">
+        <li>любой вектор разлагается по базису <b>единственным образом</b>;</li>
+        <li>коэффициенты разложения — <b>координаты</b> вектора в этом базисе;</li>
+        <li>число векторов базиса = размерность пространства (на плоскости 2, в пространстве 3);</li>
+        <li>при сложении векторов их координаты складываются, при умножении на число — умножаются.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">28</span><span class="q-title">Проекция вектора на ось</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p>Ось — прямая с выбранным направлением (единичный вектор \(\vec e\)).</p>
+      <p><b>Проекция</b> вектора \(\vec a\) на ось:</p>
+      <div class="fml">пр<sub>e</sub> a = |a| · cos φ, &nbsp; φ — угол между a и осью</div>
+      <p><b>Свойства:</b></p>
+      <ul class="tight">
+        <li>\(\operatorname{пр}_e(a+b)=\operatorname{пр}_ea+\operatorname{пр}_eb\) — линейность;</li>
+        <li>\(\operatorname{пр}_e(\lambda a)=\lambda\operatorname{пр}_ea\);</li>
+        <li>проекция может быть отрицательной, если угол тупой;</li>
+        <li>\(\operatorname{пр}_ea = (a,\ e)\) при \(|e|=1\) — совпадает со скалярным произведением на единичный вектор.</li>
+      </ul>
+      <div class="viz">
+        <canvas id="cvProj"></canvas>
+        <div class="srow"><label>b₁</label><input type="range" id="pr-bx" min="-3" max="3" step="0.25" value="2"><span class="sval" id="pr-bx-v">2</span></div>
+        <div class="srow"><label>b₂</label><input type="range" id="pr-by" min="-3" max="3" step="0.25" value="2"><span class="sval" id="pr-by-v">2</span></div>
+        <div class="srow"><label>угол оси</label><input type="range" id="pr-ang" min="-180" max="180" step="5" value="30"><span class="sval" id="pr-ang-v">30</span></div>
+        <p class="hint" id="projInfo"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">29</span><span class="q-title">Декартов базис и декартовы координаты</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Декартов базис</b> — ортонормированный базис из взаимно перпендикулярных единичных векторов \(\vec i,\vec j,\vec k\), образующих правую тройку.</p>
+      <div class="fml">a = a<sub>1</sub>i + a<sub>2</sub>j + a<sub>3</sub>k, &nbsp; a = (a<sub>1</sub>, a<sub>2</sub>, a<sub>3</sub>)</div>
+      <p>В декартовом базисе координаты вектора — это его <b>проекции на координатные оси</b>. Поэтому все формулы (длина, скалярное произведение, угол) выглядят максимально просто.</p>
+      <p>Свойства: \((e_i,e_j)=\delta_{ij}\) — 1 при \(i=j\), 0 иначе.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== BLOCK 5 ==================== -->
+<section class="page" id="b5">
+  <h1>Блок 5 · Скалярное, векторное и смешанное произведение</h1>
+  <p class="lead">Каждый вопрос блока оценивается в 1 балл.</p>
+  <div class="btnrow"><button class="btn" data-toggle-all="open">Развернуть все</button><button class="btn" data-toggle-all="close">Свернуть все</button></div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">30</span><span class="q-title">Скалярное произведение и его свойства</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Определение.</b></p>
+      <div class="fml">(a, b) = |a| · |b| · cos φ, &nbsp; φ = ∠(a,b)</div>
+      <p>В декартовых координатах: \((a,b)=a_1b_1+a_2b_2+a_3b_3\).</p>
+      <p><b>Свойства:</b></p>
+      <ul class="tight">
+        <li>\((a,b)=(b,a)\) — коммутативность;</li>
+        <li>\((a+b,c)=(a,c)+(b,c)\) — дистрибутивность;</li>
+        <li>\((\lambda a,b)=\lambda(a,b)\);</li>
+        <li>\((a,a)=|a|^{2}\ge0\), причём \((a,a)=0\) ⟺ \(a=0\);</li>
+        <li>\(a\perp b\) ⟺ \((a,b)=0\) — критерий перпендикулярности;</li>
+        <li>\(|(a,b)|\le|a||b|\) (неравенство Коши–Буняковского).</li>
+      </ul>
+      <div class="viz">
+        <canvas id="cvScalar"></canvas>
+        <div class="srow"><label>|a|</label><input type="range" id="sp-la" min="0.5" max="3" step="0.25" value="2.5"><span class="sval" id="sp-la-v">2.5</span></div>
+        <div class="srow"><label>|b|</label><input type="range" id="sp-lb" min="0.5" max="3" step="0.25" value="2"><span class="sval" id="sp-lb-v">2</span></div>
+        <div class="srow"><label>угол φ</label><input type="range" id="sp-phi" min="0" max="180" step="5" value="55"><span class="sval" id="sp-phi-v">55</span></div>
+        <p class="hint" id="scalarInfo"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">31</span><span class="q-title">Векторное произведение и его свойства</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Определение.</b> \(a\times b\) — вектор, для которого:</p>
+      <ul class="tight">
+        <li>\(|a\times b| = |a||b|\sin\varphi\) — площадь параллелограмма на \(a\) и \(b\);</li>
+        <li>\(a\times b \perp a\) и \(a\times b\perp b\);</li>
+        <li>тройка \((a,b,a\times b)\) — правая (правило правой руки).</li>
+      </ul>
+      <p><b>В координатах</b> (через определитель):</p>
+      <div class="fml">
+        a×b = <span class="mat" style="grid-template-columns:repeat(3,auto)"><span>i</span><span>j</span><span>k</span><span>a<sub>1</sub></span><span>a<sub>2</sub></span><span>a<sub>3</sub></span><span>b<sub>1</sub></span><span>b<sub>2</sub></span><span>b<sub>3</sub></span></span>
+        = (a<sub>2</sub>b<sub>3</sub>−a<sub>3</sub>b<sub>2</sub>, &nbsp;a<sub>3</sub>b<sub>1</sub>−a<sub>1</sub>b<sub>3</sub>, &nbsp;a<sub>1</sub>b<sub>2</sub>−a<sub>2</sub>b<sub>1</sub>)
+      </div>
+      <p><b>Свойства:</b></p>
+      <ul class="tight">
+        <li>\(a\times b = -\,b\times a\) — <b>антикоммутативность</b>;</li>
+        <li>\((a+b)\times c = a\times c + b\times c\) — дистрибутивность;</li>
+        <li>\((\lambda a)\times b=\lambda(a\times b)\);</li>
+        <li>\(a\times a = 0\); &nbsp; \(a\times b=0\) ⟺ \(a\parallel b\) — критерий коллинеарности;</li>
+        <li>\(|a\times b|\) = площадь параллелограмма, \(\tfrac12|a\times b|\) = площадь треугольника.</li>
+      </ul>
+      <div class="viz">
+        <canvas id="cvCross"></canvas>
+        <div class="srow"><label>|a|</label><input type="range" id="cr-la" min="0.5" max="3" step="0.25" value="2.5"><span class="sval" id="cr-la-v">2.5</span></div>
+        <div class="srow"><label>|b|</label><input type="range" id="cr-lb" min="0.5" max="3" step="0.25" value="2"><span class="sval" id="cr-lb-v">2</span></div>
+        <div class="srow"><label>угол</label><input type="range" id="cr-th" min="0" max="180" step="5" value="60"><span class="sval" id="cr-th-v">60</span></div>
+        <p class="hint" id="crossInfo"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">32</span><span class="q-title">Смешанное произведение и его свойства</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <p><b>Определение.</b></p>
+      <div class="fml">(a, b, c) = a · (b × c)</div>
+      <p><b>В координатах</b> — это определитель, составленный из координат векторов:</p>
+      <div class="fml">
+        (a,b,c) = <span class="mat" style="grid-template-columns:repeat(3,auto)"><span>a<sub>1</sub></span><span>a<sub>2</sub></span><span>a<sub>3</sub></span><span>b<sub>1</sub></span><span>b<sub>2</sub></span><span>b<sub>3</sub></span><span>c<sub>1</sub></span><span>c<sub>2</sub></span><span>c<sub>3</sub></span></span>
+      </div>
+      <p><b>Свойства:</b></p>
+      <ul class="tight">
+        <li>\((a,b,c) = (b,c,a) = (c,a,b)\) — <b>циклическая</b> перестановка не меняет значения;</li>
+        <li>при перестановке двух векторов знак меняется;</li>
+        <li>линейно по каждому аргументу;</li>
+        <li>\(|(a,b,c)|\) — объём параллелепипеда, построенного на векторах; \(\tfrac16|(a,b,c)|\) — объём тетраэдра;</li>
+        <li>\((a,b,c)=0\) ⟺ векторы <b>компланарны</b>.</li>
+      </ul>
+      <div class="viz">
+        <canvas id="cvMixed"></canvas>
+        <div class="srow"><label>|a|</label><input type="range" id="mx-la" min="0.5" max="3" step="0.25" value="2.5"><span class="sval" id="mx-la-v">2.5</span></div>
+        <div class="srow"><label>|b|</label><input type="range" id="mx-lb" min="0.5" max="3" step="0.25" value="2"><span class="sval" id="mx-lb-v">2</span></div>
+        <div class="srow"><label>угол a,b</label><input type="range" id="mx-th" min="10" max="170" step="5" value="65"><span class="sval" id="mx-th-v">65</span></div>
+        <div class="srow"><label>высота c</label><input type="range" id="mx-h" min="0" max="3" step="0.25" value="1.5"><span class="sval" id="mx-h-v">1.5</span></div>
+        <p class="hint" id="mixedInfo"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== BLOCK 6 ==================== -->
+<section class="page" id="b6">
+  <h1>Блок 6 · Теоретические вопросы с доказательством</h1>
+  <p class="lead">Каждый вопрос этого блока оценивается в <b>3 балла</b> — поэтому перед каждым доказательством дана «интуиция»: как догадаться до нужного рассуждения.</p>
+  <div class="btnrow"><button class="btn" data-toggle-all="open">Развернуть все</button><button class="btn" data-toggle-all="close">Свернуть все</button></div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">1</span><span class="q-title">Докажите, что умножение матриц не коммутативно</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <div class="intuition"><b>💡 Интуиция</b>Утверждение «не коммутативно» — это утверждение о <i>существовании</i> контрпримера. Значит, достаточно предъявить <b>одну</b> пару матриц \(A,B\), для которых \(AB\ne BA\). Берём самые простые матрицы \(2\times2\): одну «переставляющую» координаты, другую — «убивающую» одну из них. Если хочется больше интуиции: умножение матриц — это композиция преобразований, а две операции «повернуть» и «отразить» в разных порядках дают разный результат.</div>
+      <div class="proof"><b>Доказательство</b>
+        <p>Положим</p>
+        <div class="fml">A = <span class="mat" style="grid-template-columns:repeat(2,auto)"><span>0</span><span>1</span><span>0</span><span>0</span></span>, &nbsp;&nbsp; B = <span class="mat" style="grid-template-columns:repeat(2,auto)"><span>0</span><span>0</span><span>1</span><span>0</span></span></div>
+        <p>Тогда</p>
+        <div class="fml">AB = <span class="mat" style="grid-template-columns:repeat(2,auto)"><span>1</span><span>0</span><span>0</span><span>0</span></span>, &nbsp;&nbsp; BA = <span class="mat" style="grid-template-columns:repeat(2,auto)"><span>0</span><span>0</span><span>0</span><span>1</span></span></div>
+        <p>Значит \(AB\ne BA\), то есть операция умножения матриц не коммутативна. <span class="qed">∎</span></p>
+      </div>
+      <div class="note">Дополнительно можно отметить: бывает и так, что \(AB\) определено, а \(BA\) — нет (если размеры не позволяют), что тоже говорит о несимметричности операции.</div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">2</span><span class="q-title">Умножение строки на λ увеличивает определитель в λ раз</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <div class="intuition"><b>💡 Интуиция</b>Смотрим на определение определителя через подстановки: каждое слагаемое — это <b>произведение ровно одного элемента из каждой строки</b>. Значит, в каждом слагаемом есть ровно один множитель из нашей \(i\)-й строки. Если все элементы этой строки умножить на \(\lambda\), то <b>каждое</b> слагаемое умножится на \(\lambda\) — можно вынести его за скобку. Это и есть свойство «линейность по строке» (полилинейность).</div>
+      <div class="proof"><b>Доказательство</b>
+        <p>По определению определителя \(n\)-го порядка:</p>
+        <div class="fml">det A = Σ<sub>σ∈S<sub>n</sub></sub> sgn σ · a<sub>1σ(1)</sub> · … · a<sub>nσ(n)</sub></div>
+        <p>Пусть матрица \(A'\) получена из \(A\) умножением \(i\)-й строки на \(\lambda\), то есть \(a'_{ij}=\lambda a_{ij}\) при всех \(j\), а остальные строки совпадают с \(A\). Тогда</p>
+        <div class="fml">
+          det A' = Σ<sub>σ</sub> sgn σ · (Π<sub>k≠i</sub> a<sub>kσ(k)</sub>) · a'<sub>iσ(i)</sub>
+          = Σ<sub>σ</sub> sgn σ · (Π<sub>k≠i</sub> a<sub>kσ(k)</sub>) · λ a<sub>iσ(i)</sub>
+        </div>
+        <p>Выносим общий множитель \(\lambda\) за знак суммы:</p>
+        <div class="fml">det A' = λ · Σ<sub>σ</sub> sgn σ · a<sub>1σ(1)</sub>…a<sub>nσ(n)</sub> = λ · det A</div>
+        <p>Что и требовалось. <span class="qed">∎</span></p>
+      </div>
+      <div class="note">Следствие: при \(\lambda=0\) получаем, что матрица с нулевой строкой имеет определитель 0.</div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">3</span><span class="q-title">Определитель равен нулю, если есть нулевая строка</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <div class="intuition"><b>💡 Интуиция</b>Снова смотрим на определение через подстановки: каждое слагаемое содержит множитель из нулевой строки, а он равен нулю. Значит, все \(n!\) слагаемых — нули. Альтернатива: воспользоваться предыдущим свойством, подставив \(\lambda=0\) (умножение строки на 0 как раз и даёт нулевую строку).</div>
+      <div class="proof"><b>Доказательство</b>
+        <p>Пусть \(i\)-я строка матрицы \(A\) нулевая: \(a_{ij}=0\) для всех \(j=1,\dots,n\). По определению</p>
+        <div class="fml">det A = Σ<sub>σ</sub> sgn σ · a<sub>1σ(1)</sub>·…·a<sub>iσ(i)</sub>·…·a<sub>nσ(n)</sub></div>
+        <p>В каждом слагаемом присутствует множитель \(a_{i\sigma(i)}\), а он равен нулю (это элемент \(i\)-й строки). Следовательно, каждое слагаемое равно 0, и вся сумма равна 0. <span class="qed">∎</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">4</span><span class="q-title">Определитель треугольной матрицы равен произведению диагонали</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <div class="intuition"><b>💡 Интуиция</b>В разложении по подстановкам слагаемое \(\prod_i a_{i\sigma(i)}\) ненулевое только тогда, когда все его множители ненулевые. У верхнетреугольной матрицы \(a_{ij}=0\) при \(i>j\), то есть ненулевой элемент в \(i\)-й строке может стоять только в столбце с номером \(\ge i\). Но подстановка \(\sigma\) — биекция, и если \(\sigma(i)\ge i\) для всех \(i\), то сумма \(\sum\sigma(i)\) не меньше \(\sum i\), а они равны. Значит, все неравенства — равенства, то есть \(\sigma(i)=i\). Остаётся только тождественная подстановка!</div>
+      <div class="proof"><b>Доказательство</b>
+        <p>Пусть \(A\) — верхнетреугольная: \(a_{ij}=0\) при \(i>j\). Рассмотрим произвольную подстановку \(\sigma\). Если слагаемое \(\prod_{i}a_{i\sigma(i)}\) отлично от нуля, то для каждого \(i\) выполнено \(a_{i\sigma(i)}\ne0\), а значит, \(i\le\sigma(i)\).</p>
+        <p>Суммируя по всем \(i\):</p>
+        <div class="fml">Σ<sub>i=1</sub><sup>n</sup> i ≤ Σ<sub>i=1</sub><sup>n</sup> σ(i)</div>
+        <p>Но \(\sigma\) — биекция множества \(\{1,\dots,n\}\) в себя, поэтому \(\sum_i\sigma(i)=\sum_i i\). Значит, все неравенства \(i\le\sigma(i)\) обращаются в равенства: \(\sigma(i)=i\) для всех \(i\), то есть \(\sigma=\mathrm{id}\).</p>
+        <p>В сумме остаётся единственное ненулевое слагаемое, отвечающее тождественной подстановке, причём \(\mathrm{sgn}(\mathrm{id})=+1\):</p>
+        <div class="fml">det A = 1 · a<sub>11</sub>a<sub>22</sub>…a<sub>nn</sub> = Π a<sub>ii</sub></div>
+        <p>Для нижнетреугольной матрицы рассуждение аналогично (с условием \(\sigma(i)\le i\)). <span class="qed">∎</span></p>
+      </div>
+      <div class="note">Это свойство — основа метода приведения к треугольному виду: считаем \(\det A\), приводя матрицу к треугольной.</div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">5</span><span class="q-title">Необходимое условие существования обратной матрицы</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <div class="intuition"><b>💡 Интуиция</b>Хотим доказать: «если \(A\) обратима, то \(\det A\ne0\)». Единственный удобный мостик от произведения матриц к числам — <b>мультипликативность определителя</b>: \(\det(AB)=\det A\cdot\det B\). Применяем её к \(AA^{-1}=E\): получаем \(\det A\cdot\det A^{-1}=1\). А произведение двух чисел равно 1 — значит, ни одно из них не ноль.</div>
+      <div class="proof"><b>Доказательство</b>
+        <p>Пусть \(A\) — квадратная матрица порядка \(n\), для которой существует обратная \(A^{-1}\), то есть</p>
+        <div class="fml">A · A<sup>−1</sup> = E</div>
+        <p>Пользуясь теоремой об определителе произведения матриц и тем, что \(\det E=1\), получаем</p>
+        <div class="fml">det A · det A<sup>−1</sup> = det(A·A<sup>−1</sup>) = det E = 1</div>
+        <p>Произведение двух чисел равно 1, следовательно, ни один из множителей не равен нулю. В частности,</p>
+        <div class="fml">det A ≠ 0</div>
+        <p>Итак, \(\det A\ne0\) — <b>необходимое</b> условие существования обратной матрицы. <span class="qed">∎</span></p>
+      </div>
+      <div class="note">Условие является и достаточным: если \(\det A\ne0\), то \(A^{-1}=\frac{1}{\det A}A^{*}\) действительно существует.</div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">6</span><span class="q-title">Выведите формулу скалярного произведения в координатах</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <div class="intuition"><b>💡 Интуиция</b>Скалярное произведение — <b>билинейная</b> операция: раскрывается как обычное произведение скобок. Раскладываем оба вектора по декартову базису \(\vec i,\vec j,\vec k\), раскрываем по дистрибутивности и пользуемся тем, что базис ортонормирован: \((e_i,e_i)=1\), \((e_i,e_j)=0\) при \(i\ne j\). Остаются только «одноимённые» произведения.</div>
+      <div class="proof"><b>Доказательство</b>
+        <p>Пусть в декартовом (ортонормированном) базисе \(e_1,e_2,e_3\):</p>
+        <div class="fml">a = a<sub>1</sub>e<sub>1</sub> + a<sub>2</sub>e<sub>2</sub> + a<sub>3</sub>e<sub>3</sub>, &nbsp;&nbsp; b = b<sub>1</sub>e<sub>1</sub> + b<sub>2</sub>e<sub>2</sub> + b<sub>3</sub>e<sub>3</sub></div>
+        <p>Пользуясь свойствами скалярного произведения (дистрибутивность и вынесение числового множителя):</p>
+        <div class="fml">
+          (a, b) = (Σ<sub>i</sub> a<sub>i</sub>e<sub>i</sub>, Σ<sub>j</sub> b<sub>j</sub>e<sub>j</sub>)
+          = Σ<sub>i</sub> Σ<sub>j</sub> a<sub>i</sub>b<sub>j</sub> (e<sub>i</sub>, e<sub>j</sub>)
+        </div>
+        <p>В ортонормированном базисе \((e_i,e_j)=\delta_{ij}\) (1 при \(i=j\), 0 при \(i\ne j\)). Поэтому все слагаемые с \(i\ne j\) исчезают, и остаётся</p>
+        <div class="fml">(a, b) = a<sub>1</sub>b<sub>1</sub> + a<sub>2</sub>b<sub>2</sub> + a<sub>3</sub>b<sub>3</sub></div>
+        <p>Что и требовалось. <span class="qed">∎</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">7</span><span class="q-title">Выведите формулу угла между векторами в координатах</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <div class="intuition"><b>💡 Интуиция</b>В геометрическом определении скалярного произведения \((a,b)=|a||b|\cos\varphi\) угол «спрятан» рядом с косинусом. Достаточно выразить \(\cos\varphi\) и подставить координатные формулы для \((a,b)\), \(|a|\) и \(|b|\) — они уже выведены.</div>
+      <div class="proof"><b>Доказательство</b>
+        <p>Из определения скалярного произведения \((a,b)=|a||b|\cos\varphi\) при \(a\ne0\), \(b\ne0\) имеем</p>
+        <div class="fml">cos φ = (a, b) / (|a| · |b|)</div>
+        <p>Подставляем координатные выражения:</p>
+        <div class="fml">
+          (a,b) = a<sub>1</sub>b<sub>1</sub>+a<sub>2</sub>b<sub>2</sub>+a<sub>3</sub>b<sub>3</sub>, &nbsp;
+          |a| = √(a<sub>1</sub>²+a<sub>2</sub>²+a<sub>3</sub>²), &nbsp;
+          |b| = √(b<sub>1</sub>²+b<sub>2</sub>²+b<sub>3</sub>²)
+        </div>
+        <p>Получаем</p>
+        <div class="fml">
+          cos φ = (a<sub>1</sub>b<sub>1</sub>+a<sub>2</sub>b<sub>2</sub>+a<sub>3</sub>b<sub>3</sub>) /
+          [ √(a<sub>1</sub>²+a<sub>2</sub>²+a<sub>3</sub>²) · √(b<sub>1</sub>²+b<sub>2</sub>²+b<sub>3</sub>²) ]
+        </div>
+        <p>Отсюда \(\varphi=\arccos(\cos\varphi)\). <span class="qed">∎</span></p>
+      </div>
+      <div class="note">Частный случай: \(a\perp b\) ⟺ \(a_1b_1+a_2b_2+a_3b_3=0\).</div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">8</span><span class="q-title">Выведите формулу смешанного произведения в координатах</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <div class="intuition"><b>💡 Интуиция</b>Смешанное произведение — это «скалярное на векторное». Сначала выписываем \(b\times c\) по координатной формуле (через определитель \(2\times2\)), затем умножаем скалярно на \(a\). Получившееся выражение в точности совпадает с разложением определителя \(3\times3\) по первой строке — значит, это определитель из координат.</div>
+      <div class="proof"><b>Доказательство</b>
+        <p>Пусть \(a=(a_1,a_2,a_3)\), \(b=(b_1,b_2,b_3)\), \(c=(c_1,c_2,c_3)\). Векторное произведение в координатах:</p>
+        <div class="fml">b×c = (b<sub>2</sub>c<sub>3</sub>−b<sub>3</sub>c<sub>2</sub>, &nbsp; b<sub>3</sub>c<sub>1</sub>−b<sub>1</sub>c<sub>3</sub>, &nbsp; b<sub>1</sub>c<sub>2</sub>−b<sub>2</sub>c<sub>1</sub>)</div>
+        <p>Умножаем скалярно на \(a\):</p>
+        <div class="fml">
+          (a, b, c) = a<sub>1</sub>(b<sub>2</sub>c<sub>3</sub>−b<sub>3</sub>c<sub>2</sub>) + a<sub>2</sub>(b<sub>3</sub>c<sub>1</sub>−b<sub>1</sub>c<sub>3</sub>) + a<sub>3</sub>(b<sub>1</sub>c<sub>2</sub>−b<sub>2</sub>c<sub>1</sub>)
+        </div>
+        <p>Сгруппировав, узнаём разложение определителя по первой строке:</p>
+        <div class="fml">
+          (a, b, c) = <span class="mat" style="grid-template-columns:repeat(3,auto)"><span>a<sub>1</sub></span><span>a<sub>2</sub></span><span>a<sub>3</sub></span><span>b<sub>1</sub></span><span>b<sub>2</sub></span><span>b<sub>3</sub></span><span>c<sub>1</sub></span><span>c<sub>2</sub></span><span>c<sub>3</sub></span></span>
+        </div>
+        <p>Что и требовалось. <span class="qed">∎</span></p>
+      </div>
+      <div class="note">Из этой формулы сразу следует, что \((a,b,c)\) меняет знак при перестановке двух векторов и не меняется при циклической — это свойства определителя.</div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-head"><span class="q-num">9</span><span class="q-title">Если три вектора компланарны, их смешанное произведение равно нулю</span><button class="q-check">✓</button><span class="chev">▶</span></div>
+    <div class="q-body">
+      <div class="intuition"><b>💡 Интуиция</b>Смешанное произведение — это <b>объём</b> параллелепипеда, построенного на векторах. Если все три вектора лежат в одной плоскости, параллелепипед «сплющивается» — его высота нулевая, объём тоже. Формально: \(b\times c\) перпендикулярно плоскости векторов \(b\) и \(c\), а \(a\) лежит в этой плоскости — значит, скалярное произведение на перпендикулярный вектор равно нулю.</div>
+      <div class="proof"><b>Доказательство</b>
+        <p>Пусть векторы \(a,b,c\) компланарны.</p>
+        <p><b>Случай 1.</b> \(b\parallel c\). Тогда \(b\times c=0\), и \((a,b,c)=a\cdot(b\times c)=0\).</p>
+        <p><b>Случай 2.</b> \(b\) и \(c\) не коллинеарны. Тогда они задают плоскость, и поскольку \(a\) компланарен им, найдутся числа \(\alpha,\beta\) такие, что</p>
+        <div class="fml">a = αb + βc</div>
+        <p>Вектор \(b\times c\) перпендикулярен и \(b\), и \(c\), то есть \((b, b\times c)=0\) и \((c, b\times c)=0\). Тогда по линейности скалярного произведения</p>
+        <div class="fml">
+          (a, b, c) = (αb + βc, b×c) = α(b, b×c) + β(c, b×c) = α·0 + β·0 = 0
+        </div>
+        <p>В обоих случаях смешанное произведение равно нулю. <span class="qed">∎</span></p>
+      </div>
+      <div class="note">Обратное тоже верно: если \((a,b,c)=0\), то векторы компланарны (при условии, что среди них нет нулевых).</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TICKET ==================== -->
+<section class="page" id="ticket">
+  <h1>Билет и тренажёр</h1>
+  <p class="lead">Пример билета из программы + генератор случайных билетов для самопроверки.</p>
+
+  <h2>Пример билета (письменная часть, 40–45 минут)</h2>
+  <div class="ticket">
+    <ol>
+      <li>Свойства операции умножения двух матриц.</li>
+      <li>Определитель матрицы порядка \(n\).</li>
+      <li>Метод Гаусса решения СЛАУ.</li>
+      <li>Правило параллелограмма для операции сложения векторов.</li>
+      <li>Смешанное произведение и его свойства.</li>
+      <li><b>Докажите</b>, что операция умножения двух матриц не является коммутативной.</li>
+    </ol>
+  </div>
+
+  <h2>Устная часть</h2>
+  <div class="note">
+    6 вопросов: определения, которых не было в билете, и формулировки теорем из программы.
+    Каждый — максимум 1 балл, всего до 6 баллов. Можно отказаться от устной части,
+    если за письменную набрано не менее 4 баллов.
+  </div>
+
+  <h2>Случайный билет</h2>
+  <div class="btnrow">
+    <button class="btn primary" id="newTicket">🎲 Сгенерировать билет</button>
+    <button class="btn" id="toggleAnswers">Показать/скрыть ответы в новом окне</button>
+  </div>
+  <div class="ticket" id="randTicket">
+    <p style="color:var(--muted);margin:0">Нажмите «Сгенерировать билет», чтобы получить случайный набор вопросов: по одному из блоков 1–5 и один теоретический вопрос с доказательством из блока 6.</p>
+  </div>
+</section>
+
+</main>
+
+<script>
+/* =====================================================================
+   УТИЛИТЫ
+   ===================================================================== */
+function themeColors(){
+  var cs = getComputedStyle(document.documentElement);
+  function g(n){ return cs.getPropertyValue(n).trim(); }
+  return {
+    text:g('--text'), muted:g('--muted'), grid:g('--grid'), axis:g('--axis'),
+    accent:g('--accent'), accent2:g('--accent2'), accent3:g('--accent3'),
+    accent4:g('--accent4'), panel:g('--panel'), panel2:g('--panel2'), border:g('--border')
+  };
+}
+function hexA(hex, a){
+  hex = hex.replace('#','');
+  if(hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+  var n = parseInt(hex,16);
+  return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
+}
+/* подготовка canvas: возвращает {ctx,w,h} или null, если он скрыт */
+function ctxOf(cv){
+  if(!cv) return null;
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var w = cv.clientWidth, h = cv.clientHeight;
+  if(!w || !h) return null;
+  cv.width = Math.round(w*dpr);
+  cv.height = Math.round(h*dpr);
+  var ctx = cv.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,w,h);
+  return {ctx:ctx, w:w, h:h};
+}
+function arrow(ctx,x1,y1,x2,y2,color,lw){
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = lw||2;
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+  var ang = Math.atan2(y2-y1, x2-x1), hl = 10;
+  ctx.beginPath();
+  ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-hl*Math.cos(ang-0.42), y2-hl*Math.sin(ang-0.42));
+  ctx.lineTo(x2-hl*Math.cos(ang+0.42), y2-hl*Math.sin(ang+0.42));
+  ctx.closePath(); ctx.fill();
+}
+function makeCam(w,h,scale){
+  var cx = w/2, cy = h/2;
+  return {
+    s:scale, cx:cx, cy:cy,
+    X:function(x){ return cx + x*scale; },
+    Y:function(y){ return cy - y*scale; },
+    pt:function(x,y){ return [cx + x*scale, cy - y*scale]; }
+  };
+}
+function drawGridAxes(ctx,w,h,cam,T){
+  ctx.strokeStyle = T.grid; ctx.lineWidth = 1;
+  var xmin = Math.floor(-cam.cx/cam.s)-1, xmax = Math.ceil((w-cam.cx)/cam.s)+1;
+  var ymin = Math.floor((cam.cy-h)/cam.s)-1, ymax = Math.ceil(cam.cy/cam.s)+1;
+  var x,y,px,py;
+  for(x=xmin;x<=xmax;x++){
+    px = Math.round(cam.X(x))+0.5;
+    ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,h); ctx.stroke();
+  }
+  for(y=ymin;y<=ymax;y++){
+    py = Math.round(cam.Y(y))+0.5;
+    ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(w,py); ctx.stroke();
+  }
+  ctx.strokeStyle = T.axis; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0,cam.Y(0)); ctx.lineTo(w,cam.Y(0)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cam.X(0),0); ctx.lineTo(cam.X(0),h); ctx.stroke();
+  ctx.fillStyle = T.muted; ctx.font = '12px Inter, sans-serif';
+  ctx.fillText('x', w-14, cam.Y(0)-7);
+  ctx.fillText('y', cam.X(0)+7, 14);
+}
+function label(ctx,x,y,text,color){
+  ctx.fillStyle = color; ctx.font = '600 13px Inter, sans-serif';
+  ctx.fillText(text,x,y);
+}
+function fmt(x){
+  var r = Math.round(x*1000)/1000;
+  return (Object.is(r,-0) ? 0 : r).toString();
+}
+/* реестр всех отрисовок */
+var Viz = {
+  fns: [],
+  add: function(fn){ this.fns.push(fn); },
+  redraw: function(){
+    for(var i=0;i<this.fns.length;i++){
+      try{ this.fns[i](); }catch(e){ /* скрытый canvas — норм */ }
+    }
+  }
+};
+
+/* MathJax: пере-типографировать динамический контент (тренажёр) */
+function typeset(el){
+  if(window.MathJax && MathJax.typesetPromise){
+    MathJax.typesetPromise(el ? [el] : undefined).catch(function(){});
+  }
+}
+
+/* =====================================================================
+   СТАРТ
+   ===================================================================== */
+$(function(){
+
+  /* ---------- тема ---------- */
+  var THEME_KEY = 'la-theme';
+  function applyTheme(t){
+    document.documentElement.setAttribute('data-theme', t);
+    $('#themeToggle').text(t === 'dark' ? '☀️' : '🌙');
+    try{ localStorage.setItem(THEME_KEY, t); }catch(e){}
+    setTimeout(Viz.redraw, 30);
+  }
+  var savedTheme = 'light';
+  try{ savedTheme = localStorage.getItem(THEME_KEY) || 'light'; }catch(e){}
+  applyTheme(savedTheme);
+  $('#themeToggle').on('click', function(){
+    applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ---------- навигация ---------- */
+  function showPage(id){
+    var $p = $('#'+id);
+    if(!$p.length){ id = 'home'; $p = $('#home'); }
+    $('.page').removeClass('active');
+    $p.addClass('active');
+    $('.nav a').removeClass('active').filter('[data-page="'+id+'"]').addClass('active');
+    window.scrollTo(0,0);
+    setTimeout(Viz.redraw, 20);
+  }
+  $(document).on('click', '[data-page]', function(e){
+    e.preventDefault();
+    var id = $(this).data('page');
+    if(location.hash.slice(1) !== id){
+      try{ history.replaceState(null,'','#'+id); }catch(err){ location.hash = id; }
+    }
+    showPage(id);
+  });
+  $(window).on('hashchange', function(){ showPage(location.hash.slice(1) || 'home'); });
+
+  /* ---------- аккордеон ---------- */
+  $(document).on('click', '.q-head', function(){
+    var $q = $(this).closest('.q');
+    if($(this).css('cursor') === 'default') return;
+    $q.toggleClass('open');
+    $(this).next('.q-body').slideToggle(180, function(){ Viz.redraw(); });
+  });
+  $(document).on('click', '[data-toggle-all]', function(){
+    var open = $(this).data('toggle-all') === 'open';
+    $(this).closest('.page').find('.q-body').stop(true,true)[open ? 'slideDown' : 'slideUp'](150, function(){ Viz.redraw(); });
+    $(this).closest('.page').find('.q').toggleClass('open', open);
+  });
+
+  /* ---------- прогресс / «изучено» ---------- */
+  var LEARN_KEY = 'la-learned';
+  function getLearned(){
+    try{ return JSON.parse(localStorage.getItem(LEARN_KEY)) || {}; }catch(e){ return {}; }
+  }
+  function setLearned(o){
+    try{ localStorage.setItem(LEARN_KEY, JSON.stringify(o)); }catch(e){}
+  }
+  var learned = getLearned();
+
+  $('.page').each(function(){
+    var pid = this.id;
+    $(this).find('.q').each(function(i){
+      var qid = pid + '-q' + (i+1);
+      this.id = qid;
+      if(learned[qid]) $(this).addClass('learned');
+    });
+  });
+
+  function updateProgress(){
+    var total = 0, done = 0;
+    ['b1','b2','b3','b4','b5','b6'].forEach(function(pid){
+      var $qs = $('#'+pid).find('.q');
+      if(!$qs.length) return;
+      var n = $qs.length, d = $qs.filter('.learned').length;
+      total += n; done += d;
+      var $p = $('#prog-'+pid);
+      $p.find('.bar-fill').css('width', (n ? d/n*100 : 0) + '%');
+      $p.find('.prog-label').text(d + ' / ' + n);
+    });
+    $('#prog-total .bar-fill').css('width', (total ? done/total*100 : 0) + '%');
+    $('#prog-total .prog-label').text(done + ' / ' + total);
+  }
+  updateProgress();
+
+  $(document).on('click', '.q-check', function(e){
+    e.stopPropagation();
+    var $q = $(this).closest('.q');
+    $q.toggleClass('learned');
+    var l = getLearned();
+    if($q.hasClass('learned')) l[$q.attr('id')] = 1; else delete l[$q.attr('id')];
+    setLearned(l);
+    updateProgress();
+  });
+
+  /* ---------- перерисовка по ресайзу ---------- */
+  var rt;
+  $(window).on('resize', function(){
+    clearTimeout(rt);
+    rt = setTimeout(Viz.redraw, 140);
+  });
+
+  /* =====================================================================
+     ВИЗУАЛИЗАЦИЯ 1 · произведение матриц
+     ===================================================================== */
+  (function(){
+    var $A = $('#mmA'), $B = $('#mmB'), $C = $('#mmC');
+    if(!$A.length) return;
+    var A0 = [[1,2,0],[-1,3,1]];
+    var B0 = [[2,-1],[0,4],[1,1]];
+
+    function buildInputs($el, vals){
+      var rows = vals.length, cols = vals[0].length, html = '';
+      html += '<div class="mgrid" style="grid-template-columns:repeat('+cols+',auto)">';
+      for(var i=0;i<rows;i++){
+        for(var j=0;j<cols;j++){
+          html += '<input type="number" class="mcell" data-i="'+i+'" data-j="'+j+'" value="'+vals[i][j]+'">';
+        }
+      }
+      html += '</div>';
+      $el.html(html);
+    }
+    function readInputs($el){
+      var cells = $el.find('input.mcell');
+      var rows = 0, cols = 0;
+      cells.each(function(){
+        rows = Math.max(rows, +$(this).data('i')+1);
+        cols = Math.max(cols, +$(this).data('j')+1);
+      });
+      var m = [];
+      for(var i=0;i<rows;i++){ m.push(new Array(cols).fill(0)); }
+      cells.each(function(){
+        m[+$(this).data('i')][+$(this).data('j')] = parseFloat($(this).val()) || 0;
+      });
+      return m;
+    }
+    function updateC(){
+      var a = readInputs($A), b = readInputs($B);
+      var html = '<div class="mgrid" style="grid-template-columns:repeat('+b[0].length+',auto)">';
+      for(var i=0;i<a.length;i++){
+        for(var j=0;j<b[0].length;j++){
+          var s = 0, parts = [];
+          for(var k=0;k<b.length;k++){
+            s += a[i][k]*b[k][j];
+            parts.push(a[i][k]+'·'+b[k][j]);
+          }
+          html += '<span class="cval" data-i="'+i+'" data-j="'+j+'" data-sum="'+
+                  parts.join(' + ')+'">'+fmt(s)+'</span>';
+        }
+      }
+      html += '</div>';
+      $C.html(html);
+    }
+    buildInputs($A, A0);
+    buildInputs($B, B0);
+    updateC();
+
+    $A.on('input','input', updateC);
+    $B.on('input','input', updateC);
+
+    $C.on('mouseenter','.cval', function(){
+      var i = +$(this).data('i'), j = +$(this).data('j');
+      $A.find('input').removeClass('hl');
+      $B.find('input').removeClass('hl');
+      $C.find('.cval').removeClass('hl');
+      $A.find('input').filter(function(){ return +$(this).data('i') === i; }).addClass('hl');
+      $B.find('input').filter(function(){ return +$(this).data('j') === j; }).addClass('hl');
+      $(this).addClass('hl');
+      $('#mmFormula').html('c<sub>'+(i+1)+(j+1)+'</sub> = ' + $(this).data('sum') +
+                           ' = <b>' + $(this).text() + '</b>');
+    }).on('mouseleave','.cval', function(){
+      $A.find('input').removeClass('hl');
+      $B.find('input').removeClass('hl');
+      $C.find('.cval').removeClass('hl');
+      $('#mmFormula').text('Наведите курсор на элемент произведения');
+    });
+  })();
+
+  /* =====================================================================
+     ВИЗУАЛИЗАЦИЯ 2 · определитель 2×2 = площадь
+     ===================================================================== */
+  (function(){
+    var cv = document.getElementById('cvDet2');
+    if(!cv) return;
+    function draw(){
+      var c = ctxOf(cv); if(!c) return;
+      var ctx = c.ctx, w = c.w, h = c.h, T = themeColors();
+      var a = +$('#d2a').val(), b = +$('#d2b').val(),
+          cc = +$('#d2c').val(), d = +$('#d2d').val();
+      var cam = makeCam(w,h,Math.min(w,h)/9);
+      drawGridAxes(ctx,w,h,cam,T);
+
+      var det = a*d - b*cc;
+      var col = det >= 0 ? T.accent : T.accent2;
+
+      var p0 = cam.pt(0,0), p1 = cam.pt(a,cc),
+          p2 = cam.pt(a+b, cc+d), p3 = cam.pt(b,d);
+
+      ctx.beginPath();
+      ctx.moveTo(p0[0],p0[1]); ctx.lineTo(p1[0],p1[1]);
+      ctx.lineTo(p2[0],p2[1]); ctx.lineTo(p3[0],p3[1]);
+      ctx.closePath();
+      ctx.fillStyle = hexA(col, 0.16); ctx.fill();
+      ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.stroke();
+
+      arrow(ctx,p0[0],p0[1],p1[0],p1[1],T.accent,2.6);
+      arrow(ctx,p0[0],p0[1],p3[0],p3[1],T.accent4,2.6);
+
+      label(ctx,p1[0]+8,p1[1]-6,'u=(a, c)',T.accent);
+      label(ctx,p3[0]+8,p3[1]-6,'v=(b, d)',T.accent4);
+
+      $('#det2info').html(
+        'det A = ad − bc = ' + fmt(a) + '·' + fmt(d) + ' − ' + fmt(b) + '·' + fmt(cc) +
+        ' = <b>' + fmt(det) + '</b> &nbsp;·&nbsp; площадь = |det| = <b>' + fmt(Math.abs(det)) + '</b>' +
+        (Math.abs(det) < 1e-9 ? ' — векторы коллинеарны, матрица вырождена' : '')
+      );
+    }
+    Viz.add(draw);
+    $('#d2a,#d2b,#d2c,#d2d').on('input', function(){
+      $('#'+this.id+'-v').text(this.value);
+      draw();
+    });
+  })();
+
+  /* =====================================================================
+     ВИЗУАЛИЗАЦИЯ 3 · правило треугольника (Саррюс)
+     ===================================================================== */
+  (function(){
+    var $grid = $('#sarrusGrid');
+    if(!$grid.length) return;
+    $('#sarrusTerms').on('mouseenter','.term', function(){
+      var cells = String($(this).data('cells')).split(' ');
+      $grid.find('span').removeClass('hl');
+      for(var i=0;i<cells.length;i++){
+        $grid.find('span[data-c="'+cells[i]+'"]').addClass('hl');
+      }
+    }).on('mouseleave','.term', function(){
+      $grid.find('span').removeClass('hl');
+    });
+  })();
+
+  /* =====================================================================
+     ВИЗУАЛИЗАЦИЯ 4 · две прямые (Крамер / Гаусс)
+     ===================================================================== */
+  (function(){
+    var cv = document.getElementById('cvLines');
+    if(!cv) return;
+    function draw(){
+      var c = ctxOf(cv); if(!c) return;
+      var ctx = c.ctx, w = c.w, h = c.h, T = themeColors();
+      var cam = makeCam(w,h,Math.min(w,h)/10);
+      drawGridAxes(ctx,w,h,cam,T);
+
+      var k1 = +$('#l1k').val(), m1 = +$('#l1m').val();
+      var k2 = +$('#l2k').val(), m2 = +$('#l2m').val();
+      var Xmax = w/cam.s/2 + 1;
+
+      function line(k,m,color){
+        var q1 = cam.pt(-Xmax, -Xmax*k + m);
+        var q2 = cam.pt( Xmax,  Xmax*k + m);
+        ctx.strokeStyle = color; ctx.lineWidth = 2.4;
+        ctx.beginPath(); ctx.moveTo(q1[0],q1[1]); ctx.lineTo(q2[0],q2[1]); ctx.stroke();
+      }
+      line(k1,m1,T.accent);
+      line(k2,m2,T.accent2);
+
+      var det = k1 - k2;
+      var msg;
+      if(Math.abs(det) > 1e-9){
+        var x = (m2 - m1)/det, y = k1*x + m1;
+        var p = cam.pt(x,y);
+        ctx.beginPath(); ctx.arc(p[0],p[1],6,0,Math.PI*2);
+        ctx.fillStyle = T.accent3; ctx.fill();
+        ctx.strokeStyle = T.panel; ctx.lineWidth = 2; ctx.stroke();
+        msg = 'Δ = k₁ − k₂ = <b>' + fmt(det) + '</b> ≠ 0 → единственное решение: x = ' +
+              fmt(x) + ', y = ' + fmt(y);
+      } else if(Math.abs(m1-m2) < 1e-9){
+        msg = 'Δ = k₁ − k₂ = 0, прямые совпадают → бесконечно много решений';
+      } else {
+        msg = 'Δ = k₁ − k₂ = 0, прямые параллельны → решений нет';
+      }
+      $('#linesInfo').html(msg);
+    }
+    Viz.add(draw);
+    $('#l1k,#l1m,#l2k,#l2m').on('input', function(){
+      $('#'+this.id+'-v').text(this.value);
+      draw();
+    });
+  })();
+
+  /* =====================================================================
+     ВИЗУАЛИЗАЦИЯ 5 · сложение векторов (параллелограмм)
+     ===================================================================== */
+  (function(){
+    var cv = document.getElementById('cvSum');
+    if(!cv) return;
+    function draw(){
+      var c = ctxOf(cv); if(!c) return;
+      var ctx = c.ctx, w = c.w, h = c.h, T = themeColors();
+      var ax = +$('#vs-ax').val(), ay = +$('#vs-ay').val();
+      var bx = +$('#vs-bx').val(), by = +$('#vs-by').val();
+      var cam = makeCam(w,h,Math.min(w,h)/9);
+      drawGridAxes(ctx,w,h,cam,T);
+
+      var O = cam.pt(0,0), A = cam.pt(ax,ay), B = cam.pt(bx,by), S = cam.pt(ax+bx, ay+by);
+
+      /* параллелограмм */
+      ctx.setLineDash([5,5]); ctx.strokeStyle = T.muted; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.moveTo(A[0],A[1]); ctx.lineTo(S[0],S[1]);
+      ctx.lineTo(B[0],B[1]); ctx.stroke();
+      ctx.setLineDash([]);
+
+      /* заливка */
+      ctx.beginPath();
+      ctx.moveTo(O[0],O[1]); ctx.lineTo(A[0],A[1]);
+      ctx.lineTo(S[0],S[1]); ctx.lineTo(B[0],B[1]);
+      ctx.closePath();
+      ctx.fillStyle = hexA(T.accent3, 0.12); ctx.fill();
+
+      arrow(ctx,O[0],O[1],A[0],A[1],T.accent,2.6);
+      arrow(ctx,O[0],O[1],B[0],B[1],T.accent4,2.6);
+      arrow(ctx,O[0],O[1],S[0],S[1],T.accent3,3);
+
+      label(ctx,A[0]+8,A[1]-6,'a',T.accent);
+      label(ctx,B[0]+8,B[1]-6,'b',T.accent4);
+      label(ctx,S[0]+8,S[1]-6,'a+b',T.accent3);
+
+      $('#sumInfo').html('a = (' + fmt(ax) + ', ' + fmt(ay) + '), &nbsp; b = (' +
+        fmt(bx) + ', ' + fmt(by) + '), &nbsp; a + b = <b>(' +
+        fmt(ax+bx) + ', ' + fmt(ay+by) + ')</b>');
+    }
+    Viz.add(draw);
+    $('#vs-ax,#vs-ay,#vs-bx,#vs-by').on('input', function(){
+      $('#'+this.id+'-v').text(this.value);
+      draw();
+    });
+  })();
+
+  /* =====================================================================
+     ВИЗУАЛИЗАЦИЯ 6 · проекция на ось
+     ===================================================================== */
+  (function(){
+    var cv = document.getElementById('cvProj');
+    if(!cv) return;
+    function draw(){
+      var c = ctxOf(cv); if(!c) return;
+      var ctx = c.ctx, w = c.w, h = c.h, T = themeColors();
+      var bx = +$('#pr-bx').val(), by = +$('#pr-by').val();
+      var ang = +$('#pr-ang').val() * Math.PI/180;
+      var cam = makeCam(w,h,Math.min(w,h)/9);
+      drawGridAxes(ctx,w,h,cam,T);
+
+      var ex = Math.cos(ang), ey = Math.sin(ang);
+
+      /* ось */
+      var L = 4.5;
+      var a1 = cam.pt(-L*ex,-L*ey), a2 = cam.pt(L*ex,L*ey);
+      ctx.strokeStyle = T.axis; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(a1[0],a1[1]); ctx.lineTo(a2[0],a2[1]); ctx.stroke();
+
+      /* вектор e */
+      var E = cam.pt(ex,ey);
+      var O = cam.pt(0,0);
+      arrow(ctx,O[0],O[1],E[0],E[1],T.muted,1.6);
+      label(ctx,E[0]+7,E[1]-7,'e',T.muted);
+
+      /* вектор b */
+      var B = cam.pt(bx,by);
+      arrow(ctx,O[0],O[1],B[0],B[1],T.accent,2.6);
+      label(ctx,B[0]+8,B[1]-6,'b',T.accent);
+
+      /* проекция */
+      var pr = bx*ex + by*ey;
+      var P = cam.pt(pr*ex, pr*ey);
+
+      ctx.setLineDash([5,5]); ctx.strokeStyle = T.muted; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.moveTo(B[0],B[1]); ctx.lineTo(P[0],P[1]); ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.strokeStyle = T.accent3; ctx.lineWidth = 3.5; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(O[0],O[1]); ctx.lineTo(P[0],P[1]); ctx.stroke();
+      ctx.lineCap = 'butt';
+
+      label(ctx,P[0]+6,P[1]+18,'пр_e b',T.accent3);
+
+      $('#projInfo').html('пр<sub>e</sub> b = |b|·cos φ = b·e = ' + fmt(bx) + '·' + fmt(ex) +
+        ' + ' + fmt(by) + '·' + fmt(ey) + ' = <b>' + fmt(pr) + '</b>' +
+        (pr < 0 ? ' (угол тупой — проекция отрицательна)' : ''));
+    }
+    Viz.add(draw);
+    $('#pr-bx,#pr-by,#pr-ang').on('input', function(){
+      $('#'+this.id+'-v').text(this.value);
+      draw();
+    });
+  })();
+
+  /* =====================================================================
+     ВИЗУАЛИЗАЦИЯ 7 · скалярное произведение
+     ===================================================================== */
+  (function(){
+    var cv = document.getElementById('cvScalar');
+    if(!cv) return;
+    function draw(){
+      var c = ctxOf(cv); if(!c) return;
+      var ctx = c.ctx, w = c.w, h = c.h, T = themeColors();
+      var la = +$('#sp-la').val(), lb = +$('#sp-lb').val();
+      var phi = +$('#sp-phi').val() * Math.PI/180;
+      var cam = makeCam(w,h,Math.min(w,h)/9);
+      drawGridAxes(ctx,w,h,cam,T);
+
+      var O = cam.pt(0,0);
+      var A = cam.pt(la,0);
+      var B = cam.pt(lb*Math.cos(phi), lb*Math.sin(phi));
+
+      /* дуга угла */
+      ctx.strokeStyle = T.accent4; ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.arc(O[0],O[1], Math.min(56, cam.s*1.4), 0, -phi, true);
+      ctx.stroke();
+      var mid = -phi/2;
+      label(ctx, O[0] + Math.cos(mid)*72, O[1] + Math.sin(mid)*72 - 4, 'φ', T.accent4);
+
+      /* проекция b на a */
+      var proj = lb*Math.cos(phi);
+      var P = cam.pt(proj, 0);
+      ctx.setLineDash([5,5]); ctx.strokeStyle = T.muted; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.moveTo(B[0],B[1]); ctx.lineTo(P[0],P[1]); ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.strokeStyle = hexA(T.accent3,0.9); ctx.lineWidth = 5; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(O[0],O[1]); ctx.lineTo(P[0],P[1]); ctx.stroke();
+      ctx.lineCap = 'butt';
+
+      arrow(ctx,O[0],O[1],A[0],A[1],T.accent,2.6);
+      arrow(ctx,O[0],O[1],B[0],B[1],T.accent4,2.6);
+      label(ctx,A[0]+8,A[1]-6,'a',T.accent);
+      label(ctx,B[0]+8,B[1]-6,'b',T.accent4);
+
+      var dot = la*lb*Math.cos(phi);
+      $('#scalarInfo').html(
+        '(a,b) = |a|·|b|·cos φ = ' + fmt(la) + '·' + fmt(lb) + '·cos ' +
+        $('#sp-phi').val() + '° = <b>' + fmt(dot) + '</b>' +
+        (Math.abs(dot) < 1e-9 ? ' — векторы перпендикулярны' :
+         (dot > 0 ? ' — угол острый' : ' — угол тупой'))
+      );
+    }
+    Viz.add(draw);
+    $('#sp-la,#sp-lb,#sp-phi').on('input', function(){
+      $('#'+this.id+'-v').text(this.value);
+      draw();
+    });
+  })();
+
+  /* =====================================================================
+     ВИЗУАЛИЗАЦИЯ 8–9 · изометрия для векторного и смешанного
+     ===================================================================== */
+  function isoProject(w,h,scale,cx,cy){
+    var c30 = Math.cos(Math.PI/6), s30 = Math.sin(Math.PI/6);
+    return function(p){
+      var x = p[0], y = p[1], z = p[2];
+      return [ cx + (x - y)*c30*scale, cy + ((x + y)*s30 - z)*scale ];
+    };
+  }
+
+  /* --- векторное произведение --- */
+  (function(){
+    var cv = document.getElementById('cvCross');
+    if(!cv) return;
+    function draw(){
+      var c = ctxOf(cv); if(!c) return;
+      var ctx = c.ctx, w = c.w, h = c.h, T = themeColors();
+      var la = +$('#cr-la').val(), lb = +$('#cr-lb').val();
+      var th = +$('#cr-th').val() * Math.PI/180;
+
+      var scale = Math.min(w,h)/10;
+      var P = isoProject(w,h,scale,w/2,h*0.66);
+
+      /* плоскость z = 0 */
+      ctx.strokeStyle = T.grid; ctx.lineWidth = 1;
+      for(var i=-3;i<=3;i++){
+        var p1 = P([i,-3,0]), p2 = P([i,3,0]);
+        ctx.beginPath(); ctx.moveTo(p1[0],p1[1]); ctx.lineTo(p2[0],p2[1]); ctx.stroke();
+        var q1 = P([-3,i,0]), q2 = P([3,i,0]);
+        ctx.beginPath(); ctx.moveTo(q1[0],q1[1]); ctx.lineTo(q2[0],q2[1]); ctx.stroke();
+      }
+
+      var A = [la,0,0];
+      var B = [lb*Math.cos(th), lb*Math.sin(th), 0];
+      var S = [A[0]+B[0], A[1]+B[1], 0];
+
+      var O = P([0,0,0]), pA = P(A), pB = P(B), pS = P(S);
+
+      /* параллелограмм */
+      ctx.beginPath();
+      ctx.moveTo(O[0],O[1]); ctx.lineTo(pA[0],pA[1]);
+      ctx.lineTo(pS[0],pS[1]); ctx.lineTo(pB[0],pB[1]);
+      ctx.closePath();
+      ctx.fillStyle = hexA(T.accent3, 0.20); ctx.fill();
+      ctx.strokeStyle = hexA(T.accent3, 0.9); ctx.lineWidth = 1.6; ctx.stroke();
+
+      arrow(ctx,O[0],O[1],pA[0],pA[1],T.accent,2.6);
+      arrow(ctx,O[0],O[1],pB[0],pB[1],T.accent4,2.6);
+
+      /* векторное произведение — вертикально */
+      var crossLen = la*lb*Math.sin(th);
+      var N = P([0,0,crossLen*0.75]);
+      ctx.setLineDash([4,4]); ctx.strokeStyle = T.muted; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.moveTo(O[0],O[1]); ctx.lineTo(N[0],N[1]); ctx.stroke();
+      ctx.setLineDash([]);
+      arrow(ctx,O[0],O[1],N[0],N[1],T.accent2,3);
+
+      label(ctx,pA[0]+8,pA[1]+4,'a',T.accent);
+      label(ctx,pB[0]+8,pB[1]+4,'b',T.accent4);
+      label(ctx,N[0]+9,N[1]-4,'a×b',T.accent2);
+
+      $('#crossInfo').html(
+        '|a×b| = |a|·|b|·sin φ = ' + fmt(la) + '·' + fmt(lb) + '·sin ' +
+        $('#cr-th').val() + '° = <b>' + fmt(Math.abs(crossLen)) + '</b> — площадь параллелограмма' +
+        (Math.abs(crossLen) < 1e-9 ? ' (векторы коллинеарны, a×b = 0)' : '')
+      );
+    }
+    Viz.add(draw);
+    $('#cr-la,#cr-lb,#cr-th').on('input', function(){
+      $('#'+this.id+'-v').text(this.value);
+      draw();
+    });
+  })();
+
+  /* --- смешанное произведение --- */
+  (function(){
+    var cv = document.getElementById('cvMixed');
+    if(!cv) return;
+    function draw(){
+      var c = ctxOf(cv); if(!c) return;
+      var ctx = c.ctx, w = c.w, h = c.h, T = themeColors();
+      var la = +$('#mx-la').val(), lb = +$('#mx-lb').val();
+      var th = +$('#mx-th').val() * Math.PI/180;
+      var hh = +$('#mx-h').val();
+
+      var scale = Math.min(w,h)/11;
+      var P = isoProject(w,h,scale,w/2,h*0.68);
+
+      var A = [la,0,0];
+      var B = [lb*Math.cos(th), lb*Math.sin(th), 0];
+      var C = [0,0,hh];
+
+      function V(al,be,ga){
+        return [al*A[0]+be*B[0]+ga*C[0],
+                al*A[1]+be*B[1]+ga*C[1],
+                al*A[2]+be*B[2]+ga*C[2]];
+      }
+      var c000 = P(V(0,0,0)), c100 = P(V(1,0,0)),
+          c010 = P(V(0,1,0)), c110 = P(V(1,1,0)),
+          c001 = P(V(0,0,1)), c101 = P(V(1,0,1)),
+          c011 = P(V(0,1,1)), c111 = P(V(1,1,1));
+
+      function seg(p,q,color,lw,dash){
+        ctx.setLineDash(dash || []);
+        ctx.strokeStyle = color; ctx.lineWidth = lw;
+        ctx.beginPath(); ctx.moveTo(p[0],p[1]); ctx.lineTo(q[0],q[1]); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      /* верхняя грань */
+      ctx.beginPath();
+      ctx.moveTo(c001[0],c001[1]); ctx.lineTo(c101[0],c101[1]);
+      ctx.lineTo(c111[0],c111[1]); ctx.lineTo(c011[0],c011[1]);
+      ctx.closePath();
+      ctx.fillStyle = hexA(T.accent, 0.16); ctx.fill();
+
+      /* нижняя грань — пунктиром */
+      seg(c000,c100,T.axis,1.4,[5,5]);
+      seg(c100,c110,T.axis,1.4,[5,5]);
+      seg(c110,c010,T.axis,1.4,[5,5]);
+      seg(c010,c000,T.axis,1.4,[5,5]);
+
+      /* верхняя грань и рёбра */
+      seg(c001,c101,T.axis,1.8);
+      seg(c101,c111,T.axis,1.8);
+      seg(c111,c011,T.axis,1.8);
+      seg(c011,c001,T.axis,1.8);
+      seg(c000,c001,T.axis,1.8);
+      seg(c100,c101,T.axis,1.8);
+      seg(c010,c011,T.axis,1.8);
+      seg(c110,c111,T.axis,1.8);
+
+      /* векторы */
+      var O = c000;
+      arrow(ctx,O[0],O[1],c100[0],c100[1],T.accent,2.8);
+      arrow(ctx,O[0],O[1],c010[0],c010[1],T.accent4,2.8);
+      arrow(ctx,O[0],O[1],c001[0],c001[1],T.accent3,2.8);
+
+      label(ctx,c100[0]+8,c100[1]+14,'a',T.accent);
+      label(ctx,c010[0]+8,c010[1]+14,'b',T.accent4);
+      label(ctx,c001[0]-20,c001[1]-6,'c',T.accent3);
+
+      var vol = Math.abs(la*Math.cos(0)*0) ; /* placeholder */
+      var area = Math.abs(A[0]*B[1] - A[1]*B[0]);
+      vol = area * hh;
+
+      $('#mixedInfo').html(
+        'V = |(a,b,c)| = |a×b|·h = ' + fmt(area) + ' · ' + fmt(hh) +
+        ' = <b>' + fmt(vol) + '</b>' +
+        (vol < 1e-9 ? ' — векторы компланарны, объём нулевой' : '')
+      );
+    }
+    Viz.add(draw);
+    $('#mx-la,#mx-lb,#mx-th,#mx-h').on('input', function(){
+      $('#'+this.id+'-v').text(this.value);
+      draw();
+    });
+  })();
+
+  /* =====================================================================
+     ТРЕНАЖЁР БИЛЕТОВ
+     ===================================================================== */
+  (function(){
+    var $btn = $('#newTicket');
+    if(!$btn.length) return;
+    var BANK = {
+      1: ['Матрица. Виды матриц. Структура матрицы.',
+          'Сложение матриц. Свойства операции сложения.',
+          'Умножение матрицы на число. Свойства операции.',
+          'Транспонирование матриц и его свойства.',
+          'Умножение вектор-строки на вектор-столбец.',
+          'Согласованность матриц. Произведение матриц и его свойства.'],
+      2: ['Определитель матрицы 2-го порядка.',
+          'Определитель 3-го порядка (правило треугольника).',
+          'Понятие подстановки. Инверсии. Чётные и нечётные подстановки.',
+          'Определитель матрицы n-го порядка.',
+          'Свойства определителя матрицы n-го порядка.',
+          'Миноры и алгебраические дополнения. Теорема Лапласа.',
+          'Элементарные преобразования строк. Линейная зависимость строк.',
+          'Нахождение определителя приведением к треугольному виду.'],
+      3: ['Обратная матрица.',
+          'Нахождение обратной матрицы через присоединённую.',
+          'Нахождение обратной матрицы через расширенную.',
+          'Решение матричных уравнений AX = B и XA = B.',
+          'Метод Крамера решения СЛАУ.',
+          'Метод Гаусса решения СЛАУ.',
+          'Ранг матрицы. Ступенчатые матрицы.',
+          'Теорема Кронекера–Капелли.'],
+      4: ['Геометрические векторы. Координаты вектора. Длина вектора.',
+          'Сложение векторов и умножение вектора на число.',
+          'Коллинеарные и компланарные векторы.',
+          'Линейная независимость векторов.',
+          'Базис и координаты вектора.',
+          'Проекция вектора на ось.',
+          'Декартов базис и декартовы координаты.'],
+      5: ['Скалярное произведение и его свойства.',
+          'Векторное произведение и его свойства.',
+          'Смешанное произведение и его свойства.'],
+      6: ['Докажите, что операция умножения двух матриц не является коммутативной.',
+          'Докажите, что при умножении строки матрицы на ненулевое число λ её определитель увеличится в λ раз.',
+          'Докажите, что определитель матрицы порядка n равен нулю, если в ней есть нулевая строка.',
+          'Докажите, что определитель треугольной матрицы равен произведению элементов главной диагонали.',
+          'Необходимое условие существования обратной матрицы (с доказательством).',
+          'Выведите формулу скалярного произведения векторов в координатной форме.',
+          'Выведите формулу для вычисления угла между векторами в координатной форме.',
+          'Выведите формулу смешанного произведения векторов в координатной форме.',
+          'Докажите, что если три вектора компланарны, то их смешанное произведение равно нулю.']
+    };
+    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+    $btn.on('click', function(){
+      var html = '<ol>';
+      for(var b=1;b<=5;b++){
+        html += '<li><span class="tag">Блок '+b+' · 1 балл</span>' + pick(BANK[b]) + '</li>';
+      }
+      html += '<li><span class="tag" style="color:var(--accent2)">Блок 6 · 3 балла</span>' + pick(BANK[6]) + '</li>';
+      html += '</ol>';
+      $('#randTicket').html(html);
+      typeset(document.getElementById('randTicket'));
+    });
+
+    $('#toggleAnswers').on('click', function(){
+      var $el = $('#randTicket');
+      if($el.find('ol').length){
+        $el.find('ol').fadeOut(150);
+      } else {
+        $el.find('ol').fadeIn(150);
+      }
+    });
+  })();
+
+  /* ---------- первичная отрисовка ---------- */
+  showPage(location.hash.slice(1) || 'home');
+  setTimeout(Viz.redraw, 60);
+  /* на случай, если MathJax ещё догружается */
+  if(window.MathJax && MathJax.startup && MathJax.startup.promise){
+    MathJax.startup.promise.then(function(){ /* уже отрисовано */ });
+  }
+});
+</script>
+</body>
+</html>
